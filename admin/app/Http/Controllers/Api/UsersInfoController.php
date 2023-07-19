@@ -37,6 +37,7 @@ class UsersInfoController extends Controller
             'gender'        => 'required|string|max: 191',
             'email'         => 'required|email|max: 191',
             'mobile_no'     => 'required|digits: 11',
+            'points'     => 'required|float: 11',
             'address'       => 'required|string|max: 255',
             'birth_date'    => 'required|string|max: 255'
         ]);
@@ -53,7 +54,8 @@ class UsersInfoController extends Controller
                 'email'         =>  $request->email,
                 'birth_date'    =>  $request->birth_date,
                 'mobile_no'     =>  $request->mobile_no,
-                'address'       =>  $request->address
+                'address'       =>  $request->address,
+                'points'       =>  $request->points
             ]); 
             if ($usersinfo) {
 
@@ -116,6 +118,7 @@ class UsersInfoController extends Controller
             'gender'        => 'required|string|max: 191',
             'email'         => 'required|email|max: 191',
             'mobile_no'     => 'required|digits: 11',
+            'points'     => 'required|float: 11',
             'address'       => 'required|string|max: 255',
             'birth_date'    => 'required|string|max: 255'
         ]);
@@ -139,7 +142,8 @@ class UsersInfoController extends Controller
                     'email'         =>  $request->email,
                     'birth_date'    =>  $request->birth_date,
                     'mobile_no'     =>  $request->mobile_no,
-                    'address'       =>  $request->address
+                    'address'       =>  $request->address,
+                    'points'       =>  $request->points
                 ]); 
 
                 return response()->json([

@@ -9,7 +9,7 @@ use App\Http\Controllers\Api\UsersInfoController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+Route::middleware(['auth:sanctum'])->group(function () {
 /**
  * CRUD Routes
  */
@@ -32,6 +32,10 @@ Route::put('usersinfo/{id}/edit', [UsersInfoController::class, 'update']);
 // DELETE
 Route::delete('usersinfo/{id}/delete', [UsersInfoController::class, 'destroy']);
 
+//LOGOUT USER
+Route::post('/auth/logout', [UserController::class,'logout']);
+});
+
 /**
  * Login and Register Routes
  */
@@ -41,5 +45,3 @@ Route::post('/auth/register', [UserController::class,'create']);
 //LOGIN USER
 Route::post('/auth/login', [UserController::class,'login']);
 
-//LOGOUT USER
-Route::post('/auth/logout', [UserController::class,'logout']);

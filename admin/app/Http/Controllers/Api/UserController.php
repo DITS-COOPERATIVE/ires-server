@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -84,12 +85,14 @@ class UserController extends Controller
             }
 
             $user = User::where('username', $request->username)->first();
+            $token = $user->createToken("API_TOKEN")->plainTextToken;
+            $cookie = cookie('jwt',$token, 60 * 24);
 
             return response()->json([
                 'status'    =>  true,
                 'message'   =>  'User Login Successfully',
-                'token'    =>  $user->createToken("API_TOKEN")->plainTextToken
-            ],200);
+                'token'     =>  $token
+            ],200)->withCookie($cookie);
 
         } catch (Throwable $th) {
             return response()->json([
@@ -99,17 +102,17 @@ class UserController extends Controller
         }
     }
 
-    public function logout()
-    {
-        Session::flush();
-        
-        Auth::logout();
+    public function logout(Request $request)
+    {   
 
+        $cookie = Cookie::forget('jwt');
+        $user = Auth::user();
+        $user->tokens()->delete();
         return response()->json([
             'status'    =>  true,
             'message'   =>  'User Logout Successfully',
         ],200);
         
-        redirect('login');
+        
     }
 }

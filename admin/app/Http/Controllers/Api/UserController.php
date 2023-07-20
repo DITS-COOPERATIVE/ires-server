@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Throwable;
 use App\Models\User;
-use App\Models\UsersInfo;
+use App\Models\Customers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -121,12 +121,12 @@ class UserController extends Controller
 
     public function index (Request $request)
     {
-        $usersinfo = UsersInfo:: all();
-        if ($usersinfo -> count() > 0) {
+        $customers = Customers:: all();
+        if ($customers -> count() > 0) {
         
         $data = [
                 'status' => 200,
-                'usersinfo' => $usersinfo  
+                'Customers' => $customers  
                 ];
             return response()->json($data, 200);
 
@@ -157,7 +157,7 @@ class UserController extends Controller
                 'errors'    => $validator ->messages()
             ],422);
         }else{
-            $usersinfo = UsersInfo::create([
+            $customers = Customers::create([
                 'first_name'    =>  $request->first_name,
                 'last_name'     =>  $request->last_name,
                 'gender'        =>  $request->gender,
@@ -167,11 +167,11 @@ class UserController extends Controller
                 'address'       =>  $request->address,
                 'points'       =>  $request->points
             ]); 
-            if ($usersinfo) {
+            if ($customers) {
 
                 return response()->json([
                     'status'    =>  200,
-                    'message'   => "User Information added successfully"
+                    'message'   => "Customer Information added successfully"
                 ], 200);
 
             }else{
@@ -185,12 +185,12 @@ class UserController extends Controller
     }
     public function show($id)
     {
-        $userinfo = UsersInfo::find($id);
-        if ($userinfo) {
+        $customers = Customers::find($id);
+        if ($customers) {
 
             return response()->json([
                 'status'    =>  200,
-                'userinfo'   => $userinfo
+                'customers'   => $customers
             ], 200);
 
         }else{
@@ -204,12 +204,12 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $userinfo = UsersInfo::find($id);
-        if ($userinfo) {
+        $customers = Customers::find($id);
+        if ($customers) {
 
             return response()->json([
                 'status'    =>  200,
-                'userinfo'   => $userinfo
+                'customers'   => $customers
             ], 200);
 
         }else{
@@ -242,11 +242,11 @@ class UserController extends Controller
 
         }else{
 
-            $usersinfo = UsersInfo::find($id);
+            $customers = Customers::find($id);
             
-            if ($usersinfo) {
+            if ($customers) {
 
-                $usersinfo = UsersInfo::find($id) -> update([
+                $customers = Customers::find($id) -> update([
                     'first_name'    =>  $request->first_name,
                     'last_name'     =>  $request->last_name,
                     'gender'        =>  $request->gender,
@@ -259,7 +259,7 @@ class UserController extends Controller
 
                 return response()->json([
                     'status'    =>  200,
-                    'message'   => "User Information updated successfully"
+                    'message'   => "Customer Information updated successfully"
                 ], 200);
 
             }else{
@@ -274,20 +274,12 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        $admin = Users::where('user_type','ADMIN');
-        if (!$admin) {
-            $data = [
-                'status' => 404,
-                'message' => 'Forbidden! You are not an admin.'  
-                ];
-                return response()->json($data, 403);
-        }
-        $userinfo = UsersInfo::find($id);
-        if ($userinfo) {
-            $userinfo -> delete();
+        $customers = Customers::find($id);
+        if ($customers) {
+            $customers -> delete();
             return response()->json([
                 'status'    =>  200,
-                'message'   => "User deleted successfully!"
+                'message'   => "Customer Information deleted successfully"
             ], 200);
 
         }else{

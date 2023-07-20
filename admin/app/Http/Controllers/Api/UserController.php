@@ -42,7 +42,7 @@ class UserController extends Controller
                 'username'  =>  $request->username,
                 'password'  =>  Hash::make($request->password),
                 'email'     =>  $request->email,
-                'user_type' =>  "USER",
+                'user_type' =>  "ADMIN",
                 'is_active' =>  true,
             ]);
 
@@ -106,8 +106,10 @@ class UserController extends Controller
     {   
 
         $cookie = Cookie::forget('jwt');
+
         $user = Auth::user();
         $user->tokens()->delete();
+        
         return response()->json([
             'status'    =>  true,
             'message'   =>  'User Logout Successfully',

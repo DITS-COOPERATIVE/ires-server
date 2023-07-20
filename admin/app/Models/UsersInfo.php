@@ -18,6 +18,7 @@ class UsersInfo extends Model
         'email',
         'birth_date',
         'mobile_no',
-        'address'
+        'address',
+        'points',
     ];
 }

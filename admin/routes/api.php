@@ -20,20 +20,19 @@ Route::post('/auth/logout', [UserController::class,'logout']);
 Route::middleware(['auth:sanctum'])->group(function () {
 
     //USERS
-    Route::get('users', [UserController::class, 'index']);
-    Route::post('users', [UserController::class, 'store']);
-    Route::get('users/{id}', [UserController::class, 'show']);
-    Route::get('users/{id}/edit', [UserController::class, 'edit']);
-    Route::put('users/{id}/update', [UserController::class, 'update']);
-    Route::delete('users/{id}/delete', [UserController::class, 'destroy']);
+    Route::get('customers', [UserController::class, 'index']);
+    Route::post('customers', [UserController::class, 'store']);
+    Route::get('customers/{id}', [UserController::class, 'show']);
+    Route::put('customers/{id}', [UserController::class, 'update']);
+    Route::delete('customers/{id}', [UserController::class, 'destroy']);
 
     //PRODUCTS
     Route::get('products', [ProductController::class, 'index']);
     Route::post('products', [ProductController::class, 'store']);
     Route::get('products/{id}', [ProductController::class, 'show']);
-    Route::get('products/{id}/edit', [ProductController::class, 'edit']);
-    Route::put('products/{id}/update', [ProductController::class, 'update']);
-    Route::delete('products/{id}/delete', [ProductController::class, 'destroy']);
+    Route::put('products/{id}', [ProductController::class, 'update']);
+    Route::delete('products/{id}', [ProductController::class, 'destroy']);
+    
 });
 
 

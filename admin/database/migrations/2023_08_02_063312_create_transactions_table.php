@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('usersinfo', function (Blueprint $table) {
-        Schema::rename('usersinfo', 'customers');
-
+        Schema::create('transactions', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('sale_id');
+            $table->float('amount_rendered');
+            $table->float('change');
+            $table->timestamps();
         });
     }
 
@@ -22,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('customers', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('transactions');
     }
 };

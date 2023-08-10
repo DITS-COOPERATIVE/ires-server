@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('code');
             $table->string('model');
-            $table->string('price');
+            $table->integer('price');
             $table->integer('quantity');
             $table->float('points');
             $table->timestamps();

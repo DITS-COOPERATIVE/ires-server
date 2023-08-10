@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Customers extends Model
 {
     use HasFactory;
-
+    
     protected $table = "customers";
 
     protected $fillable = [
@@ -22,4 +22,5 @@ class Customers extends Model
         'address',
         'points',
     ];
+    
 }

@@ -26,7 +26,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //CUSTOMERS
     Route::get('customers', [CustomerController::class, 'index']);
-    Route::post('customers/add', [CustomerController::class, 'store']);
+    Route::post('customers', [CustomerController::class, 'store']);
     Route::get('customers/{id}', [CustomerController::class, 'show']);
     Route::put('customers/{id}', [CustomerController::class, 'update']);
     Route::delete('customers/{id}', [CustomerController::class, 'destroy']);
@@ -39,14 +39,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('products/{id}', [ProductController::class, 'destroy']);
 
     //ORDERS
-    Route::get('orders', [OrderController::class, 'index']);
-    Route::post('orders', [OrderController::class, 'store']);
-    Route::get('orders/{id}', [OrderController::class, 'show']);
-    Route::delete('orders/{id}', [OrderController::class, 'destroy']);
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::post('/orders', [OrderController::class, 'store']);
+    Route::get('/orders/{id}', [OrderController::class, 'show']);
+    Route::delete('/orders/{id}', [OrderController::class, 'destroy']);
 
     //TRANSACTIONS
-    Route::get('transactions', [TransactionController::class, 'index']);
-    Route::post('transactions', [TransactionController::class, 'store']);
-    Route::get('transactions/{id}', [TransactionController::class, 'show']);
-    Route::delete('transactions/{id}', [TransactionController::class, 'destroy']);
+    Route::get('/transactions',[TransactionController::class,'index'])->name('transactions.index');
+    Route::post('/transactions', [TransactionController::class, 'store']);
+    Route::get('/transactions/{id}', [TransactionController::class, 'show']);
+    Route::delete('/transactions/{id}', [TransactionController::class, 'destroy']); 
+
 });

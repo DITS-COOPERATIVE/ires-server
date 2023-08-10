@@ -16,18 +16,24 @@ class ProductController extends Controller
         
         $data = [
                 'status' => 200,
-                'usersinfo' => $products  
+                'result' => $products  
                 ];
-            return response()->json($data, 200);
+            // return response()->json($data, 200);
 
         }else{
             
         $data = [
                 'status' => 404,
-                'message' => 'No Records Found'  
+                'result' => 'No Records Found'  
                 ];
-            return response()->json($data, 404);
+            // return response()->json($data, 404);
         }
+        
+        return view('products',[
+            'products' => $products,
+            'status' => $data['status'],
+            'result' => $data['result'],
+        ]);
     }
     public function store(Request $request)
     {

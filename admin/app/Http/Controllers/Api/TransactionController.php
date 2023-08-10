@@ -33,7 +33,6 @@ class TransactionController extends Controller
         return response()->json($data, 404);
         }
     }
-
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
@@ -60,20 +59,35 @@ class TransactionController extends Controller
             ]);
 
             if ($transaction) {
-                
-                $transaction = Transactions::with([
-                    'sale.orders.customer' => function ($query){
-                        $query->select('id','first_name');
-                    },
-                    'sale.orders.product' => function ($query){
-                        $query->select('id','name');
-                    }
-                ])->get();
+
+                $points = Transactions::with([
+                    'sale' => function ($query){
+                    $query->select('id','total_points');}])
+                        ->get()
+                        ->pluck('sale')
+                        ->first()
+                        ->value('total_points');
+
+                $customer_id = Transactions::with([
+                    'sale.orders' => function ($query){
+                    $query->select('id','customer_id');}])
+                        ->get()
+                        ->pluck('sale.orders')
+                        ->first()
+                        ->flatten()
+                        ->value('customer_id');
+
+                    $customer = Customers::where('id','=',$customer_id)->first();
+                    $new_points = $customer->points + $points;
+                    $customer->points = $new_points;
+                    $customer->save();
 
                 return response()->json([
                     'status'    =>  200,
                     'message'   =>  'Transaction Added Successfully.',
-                    'result'  =>  $transaction,
+                    'result/points'  =>  $points,
+                    'result/customer'  =>  $new_points,
+                    
                 ], 200);
 
             }else{
@@ -86,13 +100,40 @@ class TransactionController extends Controller
         }    
     }
 
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $transaction = Transactions::find($id);
+        if ($transaction) {
+            return response()->json([
+                'status'    =>  200,
+                'userinfo'   => $transaction
+            ], 200);
+        }else{
+            return response()->json([
+                'status'    =>  404,
+                'message'   => "No Data Found!"
+            ], 404);
+        }
     }
 
     public function destroy(string $id)
     {
-        //
+        $transactions = Transactions::find($id);
+        if ($transactions) {
+            $transactions -> delete();
+            return response()->json([
+                'status'    =>  200,
+                'message'   => "Transaction Delete successfully!"
+            ], 200);
+
+        }else{
+
+            return response()->json([
+                'status'    =>  404,
+                'message'   => "No Data Found!"
+            ], 404);
+        }
     }
+
+    
 }

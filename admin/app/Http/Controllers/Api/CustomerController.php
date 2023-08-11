@@ -12,26 +12,24 @@ class CustomerController extends Controller
     public function index (Request $request)
     {
         $customers = Customers:: all();
+
         if ($customers -> count() > 0) {
-        
-        $data = [
+        $response = [
                 'status' => 200,
                 'result' => $customers  
-                ];
-            // return response()->json($data, 200);
+            ];
 
-        }else{
-            
-        $data = [
+        }else{ 
+
+        $response = [
                 'status' => 404,
-                'result' => 'No Records Found'  
-                ];
-            // return response()->json($data, 404);
+                'result' => 'No Records Found' 
+            ];
         }
+
         return view('customers',[
             'customers' => $customers,
-            'status' => $data['status'],
-            'result' => $data['result'],
+            'result' => $response['result'],
         ]) ;
     }
     public function store(Request $request)

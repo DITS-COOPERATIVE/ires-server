@@ -11,9 +11,14 @@ use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
+    public function create()
+    {
+        return view('add-order');
+    }
+
     public function index()
     {
-        $orders = Orders::with('product','customer')->get();
+        $orders = Orders::with('product','customer')->get()->flatten();
 
         if ($orders -> count() > 0) {
         

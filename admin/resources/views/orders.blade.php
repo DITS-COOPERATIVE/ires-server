@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Products') }}
+            {{ __('Orders') }}
         </h2>
     </x-slot>
 
@@ -16,13 +16,19 @@
                                 Order ID
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Customer ID
+                                Customer Name
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Product ID
+                                Product Name
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Quantity
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Total Price
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Total Points
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 <span class="sr-only">Edit</span>
@@ -36,13 +42,19 @@
                 {{$order->id}}
                 </th>
                 <td class="px-6 py-4">
-                {{$order->first_name}}
+                {{$order->customer->first_name}} {{$order->customer->last_name}}
                 </td>
                 <td class="px-6 py-4">
-                {{$order->product_id}}
+                {{$order->product->value('name')}}
                 </td>
                 <td class="px-6 py-4">
                 {{$order->quantity}}
+                </td>
+                <td class="px-6 py-4">
+                {{("PHP")}} {{$order->sale->total_price}}
+                </td>
+                <td class="px-6 py-4">
+                {{$order->sale->total_points}}
                 </td>
                 <td class="px-6 py-4 text-right">
                     <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>

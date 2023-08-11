@@ -18,7 +18,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Orders::with('product','customer')->get()->flatten();
+        $orders = Orders::with('product','customer','sale')->get();
 
         if ($orders -> count() > 0) {
         

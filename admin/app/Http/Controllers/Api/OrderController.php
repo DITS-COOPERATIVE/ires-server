@@ -77,10 +77,7 @@ class OrderController extends Controller
                 'total_price'   =>  $product->price * $orders->quantity,
                 'total_points'  =>  $product->points * $orders->quantity,
             ]);
-                return response()->json([
-                    'status'    =>  200,
-                    'message'   =>  'Order Added Successfully.',
-                ], 200);
+                return redirect('/orders');
 
             }else{
 

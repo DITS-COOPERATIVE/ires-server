@@ -1,13 +1,15 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+    <x-slot name="header" class="flow-root">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight ">
             {{ __('Orders') }}
+            
         </h2>
     </x-slot>
 
     @if(count($orders) > 0)
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -63,9 +65,13 @@
             @endforeach
         </tbody>
     </table>
-            </div>
+            </div><br>
+            <a href="http://127.0.0.1:8000/add-order">
+            <button class="w-full h-12 px-6 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">Add New Order</button> 
+            </a>
         </div>
     </div>
+    
         @else
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -74,7 +80,11 @@
                     {{$result}}
                     </div>
                 </div>
-            </div>  
-        @endif
-    </div>       
+            </div>
+            <br>
+            <a href="http://127.0.0.1:8000/add-orders">
+            <button class="w-full h-12 px-6 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">Add New Order</button> 
+            </a>
+        </div>
+        @endif       
 </x-app-layout>

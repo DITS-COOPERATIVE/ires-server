@@ -32,7 +32,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/customers',[CustomerController::class,'index'])->name('customers.index');
     Route::get('/orders',[OrderController::class,'index'])->name('orders.index');
     Route::get('/add-order',[OrderController::class,'create'])->name('add-order');
-    Route::post('/add-order',[OrderController::class,'store']);
+    Route::post('/add-order',[OrderController::class,'store'],function () {
+        return redirect('/orders');
+    });
     Route::get('/transactions',[TransactionController::class,'index'])->name('transactions.index');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

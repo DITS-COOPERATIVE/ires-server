@@ -9,32 +9,36 @@ use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
 {
-    public function index (Request $request)
+    public function create()
     {
-        $customers = Customers:: all();
+        return view('customers-create');
+    }
 
-        if ($customers -> count() > 0) {
-        $response = [
+    public function index(Request $request)
+    {
+        $customers = Customers::all();
+
+        if ($customers->count() > 0) {
+            $response = [
                 'status' => 200,
-                'result' => $customers  
+                'result' => $customers
             ];
+        } else {
 
-        }else{ 
-
-        $response = [
+            $response = [
                 'status' => 404,
-                'result' => 'No Records Found' 
+                'result' => 'No Records Found'
             ];
         }
 
-        return view('customers',[
+        return view('customers', [
             'customers' => $customers,
             'result' => $response['result'],
-        ]) ;
+        ]);
     }
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'first_name'    => 'required|string|max: 191',
             'last_name'     => 'required|string|max: 191',
             'gender'        => 'required|string|max: 191',
@@ -47,9 +51,9 @@ class CustomerController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status'    => 422,
-                'errors'    => $validator ->messages()
-            ],422);
-        }else{
+                'errors'    => $validator->messages()
+            ], 422);
+        } else {
             $customers = Customers::create([
                 'first_name'    =>  $request->first_name,
                 'last_name'     =>  $request->last_name,
@@ -59,15 +63,14 @@ class CustomerController extends Controller
                 'mobile_no'     =>  $request->mobile_no,
                 'address'       =>  $request->address,
                 'points'        =>  $request->points
-            ]); 
+            ]);
             if ($customers) {
 
                 return response()->json([
                     'status'    =>  200,
                     'message'   => "Customer Information added successfully"
                 ], 200);
-
-            }else{
+            } else {
 
                 return response()->json([
                     'status'    =>  500,
@@ -76,22 +79,18 @@ class CustomerController extends Controller
             }
         }
     }
-    public function show($id)
+    public function show(int $id)
     {
-        $customers = Customers::find($id);
+        $customers = Customers::where('id', $id)->get();
+
         if ($customers) {
-
-            return response()->json([
-                'status'    =>  200,
-                'customers'   => $customers
-            ], 200);
-
-        }else{
-
-            return response()->json([
-                'status'    =>  404,
-                'message'   => "No Data Found!"
-            ], 404);
+            return view('customers-view', [
+                'customers' => $customers->flatten()->first(),
+            ]);
+        } else {
+            return view('customers-view', [
+                'customers' => "No Result Found.",
+            ]);
         }
     }
 
@@ -104,8 +103,7 @@ class CustomerController extends Controller
                 'status'    =>  200,
                 'customers'   => $customers
             ], 200);
-
-        }else{
+        } else {
 
             return response()->json([
                 'status'    =>  404,
@@ -116,7 +114,7 @@ class CustomerController extends Controller
 
     public function update(Request $request, int $id)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'first_name'    => 'required|string|max: 191',
             'last_name'     => 'required|string|max: 191',
             'gender'        => 'required|string|max: 191',
@@ -130,16 +128,15 @@ class CustomerController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status'    => 422,
-                'errors'    => $validator ->messages()
-            ],422);
-
-        }else{
+                'errors'    => $validator->messages()
+            ], 422);
+        } else {
 
             $customers = Customers::find($id);
-            
+
             if ($customers) {
 
-                $customers = Customers::find($id) -> update([
+                $customers = Customers::find($id)->update([
                     'first_name'    =>  $request->first_name,
                     'last_name'     =>  $request->last_name,
                     'gender'        =>  $request->gender,
@@ -148,14 +145,13 @@ class CustomerController extends Controller
                     'mobile_no'     =>  $request->mobile_no,
                     'address'       =>  $request->address,
                     'points'       =>  $request->points
-                ]); 
+                ]);
 
                 return response()->json([
                     'status'    =>  200,
                     'message'   => "Customer Information updated successfully"
                 ], 200);
-
-            }else{
+            } else {
 
                 return response()->json([
                     'status'    =>  404,
@@ -169,13 +165,12 @@ class CustomerController extends Controller
     {
         $customers = Customers::find($id);
         if ($customers) {
-            $customers -> delete();
+            $customers->delete();
             return response()->json([
                 'status'    =>  200,
                 'message'   => "Customer Information deleted successfully"
             ], 200);
-
-        }else{
+        } else {
 
             return response()->json([
                 'status'    =>  404,

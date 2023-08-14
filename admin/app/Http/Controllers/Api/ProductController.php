@@ -9,27 +9,28 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
-    public function index (Request $request)
+
+    public function index(Request $request)
     {
-        $products = Products:: all();
-        if ($products -> count() > 0) {
-        
-        $data = [
+        $products = Products::all();
+        if ($products->count() > 0) {
+
+            $data = [
                 'status' => 200,
-                'result' => $products  
-                ];
+                'result' => $products
+            ];
             // return response()->json($data, 200);
 
-        }else{
-            
-        $data = [
+        } else {
+
+            $data = [
                 'status' => 404,
-                'result' => 'No Records Found'  
-                ];
+                'result' => 'No Records Found'
+            ];
             // return response()->json($data, 404);
         }
-        
-        return view('products',[
+
+        return view('products', [
             'products' => $products,
             'status' => $data['status'],
             'result' => $data['result'],
@@ -37,7 +38,7 @@ class ProductController extends Controller
     }
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'name'          => 'required|string|max: 191',
             'code'          => 'required|string|max: 191',
             'model'         => 'required|string|max: 191',
@@ -48,10 +49,9 @@ class ProductController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status'    => 422,
-                'errors'    => $validator ->messages()
-            ],422);
-
-        }else{
+                'errors'    => $validator->messages()
+            ], 422);
+        } else {
             $products = Products::create([
                 'name'          =>  $request->name,
                 'code'          =>  $request->code,
@@ -59,15 +59,14 @@ class ProductController extends Controller
                 'price'         =>  $request->price,
                 'quantity'      =>  $request->quantity,
                 'points'        =>  $request->points
-            ]); 
+            ]);
             if ($products) {
 
                 return response()->json([
                     'status'    =>  200,
                     'message'   => "Product added successfully"
                 ], 200);
-
-            }else{
+            } else {
 
                 return response()->json([
                     'status'    =>  500,
@@ -77,22 +76,18 @@ class ProductController extends Controller
         }
     }
 
-    public function show($id)
+    public function show(int $id)
     {
-        $products = Products::find($id);
+        $products = Products::where('id', $id)->get();
+
         if ($products) {
-
-            return response()->json([
-                'status'    =>  200,
-                'userinfo'   => $products
-            ], 200);
-
-        }else{
-
-            return response()->json([
-                'status'    =>  404,
-                'message'   => "No Data Found!"
-            ], 404);
+            return view('products-view', [
+                'products' => $products->flatten()->first(),
+            ]);
+        } else {
+            return view('products-view', [
+                'products' => "No Result Found.",
+            ]);
         }
     }
 
@@ -105,8 +100,7 @@ class ProductController extends Controller
                 'status'    =>  200,
                 'userinfo'   => $products
             ], 200);
-
-        }else{
+        } else {
 
             return response()->json([
                 'status'    =>  404,
@@ -117,7 +111,7 @@ class ProductController extends Controller
 
     public function update(Request $request, int $id)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'name'          => 'required|string|max: 191',
             'code'          => 'required|string|max: 191',
             'model'         => 'required|string|max: 191',
@@ -129,30 +123,28 @@ class ProductController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status'    => 422,
-                'errors'    => $validator ->messages()
-            ],422);
-
-        }else{
+                'errors'    => $validator->messages()
+            ], 422);
+        } else {
 
             $products = Products::find($id);
-            
+
             if ($products) {
 
-                $products = Products::find($id) -> update([
+                $products = Products::find($id)->update([
                     'name'          =>  $request->name,
                     'code'          =>  $request->code,
                     'model'         =>  $request->model,
                     'price'         =>  $request->price,
                     'quantity'      =>  $request->quantity,
                     'points'        =>  $request->points
-                ]); 
+                ]);
 
                 return response()->json([
                     'status'    =>  200,
                     'message'   => "Product updated successfully"
                 ], 200);
-
-            }else{
+            } else {
 
                 return response()->json([
                     'status'    =>  404,
@@ -166,13 +158,12 @@ class ProductController extends Controller
     {
         $products = Products::find($id);
         if ($products) {
-            $products -> delete();
+            $products->delete();
             return response()->json([
                 'status'    =>  200,
                 'message'   => "Product deleted successfully!"
             ], 200);
-
-        }else{
+        } else {
 
             return response()->json([
                 'status'    =>  404,

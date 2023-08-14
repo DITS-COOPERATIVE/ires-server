@@ -23,21 +23,29 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard',
-[DashboardController::class,'show'],
+Route::get(
+    '/dashboard',
+    [DashboardController::class, 'show'],
 )->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/products',[ProductController::class,'index'])->name('products.index');
-    Route::get('/customers',[CustomerController::class,'index'])->name('customers.index');
-    Route::get('/orders',[OrderController::class,'index'])->name('orders.index');
-    Route::get('/add-order',[OrderController::class,'create'])->name('add-order');
-    Route::post('/add-order',[OrderController::class,'store']);
-    Route::get('/transactions',[TransactionController::class,'index'])->name('transactions.index');
+
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products-view');
+
+    Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+    Route::get('/customers/{id}', [CustomerController::class, 'show'])->name('orders-view');
+
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders-view');
+    Route::get('/orders-create', [OrderController::class, 'create'])->name('orders.create');
+    Route::post('/orders/add', [OrderController::class, 'store'])->name('orders.add');
+
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

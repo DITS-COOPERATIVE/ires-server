@@ -40,14 +40,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //ORDERS
     Route::get('/orders', [OrderController::class, 'index']);
-    Route::post('/add-order', [OrderController::class, 'store']);
+    Route::post('/orders/add', [OrderController::class, 'store']);
     Route::get('/orders/{id}', [OrderController::class, 'show']);
     Route::delete('/orders/{id}', [OrderController::class, 'destroy']);
 
     //TRANSACTIONS
-    Route::get('/transactions',[TransactionController::class,'index'])->name('transactions.index');
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
     Route::post('/transactions', [TransactionController::class, 'store']);
     Route::get('/transactions/{id}', [TransactionController::class, 'show']);
-    Route::delete('/transactions/{id}', [TransactionController::class, 'destroy']); 
-
+    Route::delete('/transactions/{id}', [TransactionController::class, 'destroy']);
 });

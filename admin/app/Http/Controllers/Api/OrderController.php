@@ -13,30 +13,30 @@ class OrderController extends Controller
 {
     public function create()
     {
-        return view('add-order');
+        return view('orders-create');
     }
 
     public function index()
     {
-        $orders = Orders::with('product','customer')->get()->flatten();
+        $orders = Orders::with('product', 'customer', 'sale')->get();
 
-        if ($orders -> count() > 0) {
-        
-        $data = [
+        if ($orders->count() > 0) {
+
+            $data = [
                 'status' => 200,
                 'result' => $orders,
-                ];
+            ];
             // return response()->json($data, 200);
 
-        }else{
-            
-        $data = [
+        } else {
+
+            $data = [
                 'status' => 404,
-                'result' => 'No Records Found'  
-                ];
+                'result' => 'No Records Found'
+            ];
             // return response()->json($data, 404);
         }
-        return view('orders',[
+        return view('orders', [
             'orders' => $orders,
             'status' => $data['status'],
             'result' => $data['result'],
@@ -45,22 +45,17 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'product_id'            => 'required',
             'customer_id'           => 'required',
             'quantity'              => 'required',
         ]);
-        if ($validator->fails()) 
-        
-        {
+        if ($validator->fails()) {
             return response()->json([
                 'status'    => 422,
-                'errors'    => $validator ->messages()
-            ],422);
-
-        }
-        else
-        {
+                'errors'    => $validator->messages()
+            ], 422);
+        } else {
 
             $orders = Orders::create([
                 'customer_id'       =>  $request->customer_id,
@@ -73,57 +68,46 @@ class OrderController extends Controller
                 $product    = Products::find($orders->product_id);
 
                 Sales::create([
-                'order_id'      =>  $orders->id,
-                'total_price'   =>  $product->price * $orders->quantity,
-                'total_points'  =>  $product->points * $orders->quantity,
-            ]);
-                return response()->json([
-                    'status'    =>  200,
-                    'message'   =>  'Order Added Successfully.',
-                ], 200);
-
-            }else{
+                    'order_id'      =>  $orders->id,
+                    'total_price'   =>  $product->price * $orders->quantity,
+                    'total_points'  =>  $product->points * $orders->quantity,
+                ]);
+                return redirect('/orders');
+            } else {
 
                 return response()->json([
                     'status'    =>  500,
                     'message'   => "Something went wrong!"
                 ], 500);
             }
-        }    
-    }
-
-    public function show(string $id)
-    {
-        $id = Orders::with('customer')->get('id');
-        $orders = Orders::find($id);
-
-        if ($orders) {
-
-            return response()->json([
-                'status'    =>  200,
-                'orders'   => $orders
-            ], 200);
-
-        }else{
-
-            return response()->json([
-                'status'    =>  404,
-                'message'   => "No Data Found!"
-            ], 404);
         }
     }
-    
+
+    public function show(int $id)
+    {
+        $orders = Orders::where('id', $id)->get();
+
+        if ($orders) {
+            return view('orders-view', [
+                'orders' => $orders->flatten()->first(),
+            ]);
+        } else {
+            return view('orders-view', [
+                'orders' => "No Result Found.",
+            ]);
+        }
+    }
+
     public function destroy(string $id)
     {
         $orders = Orders::find($id);
         if ($orders) {
-            $orders -> delete();
+            $orders->delete();
             return response()->json([
                 'status'    =>  200,
                 'message'   => "Order deleted successfully"
             ], 200);
-
-        }else{
+        } else {
 
             return response()->json([
                 'status'    =>  404,

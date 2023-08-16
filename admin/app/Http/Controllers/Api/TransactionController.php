@@ -7,13 +7,24 @@ use App\Models\Customers;
 use App\Models\Transactions;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Orders;
 use Illuminate\Support\Facades\Validator;
 
 class TransactionController extends Controller
 {
-    public function create()
+    public function create($id)
     {
-        return view('products-create');
+        $sales = Sales::with('orders')->where('id', $id)->get()->flatten()->first();
+        $orders = $sales->orders->flatten()->first();
+        $customer_id = $orders->customer_id;
+        $count = Orders::where('customer_id', $customer_id)->count();
+        $amount = $sales->total_price;
+        return view('transactions-create', [
+            'sales' => $sales,
+            'orders' => $orders,
+            'amount' => $amount,
+            'count' => $count,
+        ]);
     }
 
     public function index()
@@ -38,22 +49,23 @@ class TransactionController extends Controller
     }
     public function store(Request $request)
     {
+        $change = $request->amount_rendered - $request->total_price;
+
         $validator = Validator::make($request->all(), [
             'sale_id'              => 'required',
             'amount_rendered'       => 'required',
-            'change'                => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json([
                 'status'    => 422,
                 'errors'    => $validator->messages()
             ], 422);
-        } else {
+        } else {;
 
             $transaction = Transactions::create([
                 'sale_id'           =>  $request->sale_id,
                 'amount_rendered'   =>  $request->amount_rendered,
-                'change'            =>  $request->change,
+                'change'            =>  $change,
             ]);
 
             if ($transaction) {
@@ -84,13 +96,7 @@ class TransactionController extends Controller
                 $customer->points = $new_points;
                 $customer->save();
 
-                return response()->json([
-                    'status'    =>  200,
-                    'message'   =>  'Transaction Added Successfully.',
-                    'result/points'  =>  $points,
-                    'result/customer'  =>  $new_points,
-
-                ], 200);
+                return redirect('/transactions');
             } else {
 
                 return response()->json([

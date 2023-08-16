@@ -44,7 +44,6 @@ class CustomerController extends Controller
             'gender'        => 'required|string|max: 191',
             'email'         => 'required|email',
             'mobile_no'     => 'required',
-            'points'        => 'required',
             'address'       => 'required',
             'birth_date'    => 'required',
         ]);
@@ -62,14 +61,14 @@ class CustomerController extends Controller
                 'birth_date'    =>  $request->birth_date,
                 'mobile_no'     =>  $request->mobile_no,
                 'address'       =>  $request->address,
-                'points'        =>  $request->points
+                'points'        =>  0,
             ]);
             if ($customers) {
-
-                return response()->json([
-                    'status'    =>  200,
-                    'message'   => "Customer Information added successfully"
-                ], 200);
+                // return response()->json([
+                //     'status'    =>  200,
+                //     'message'   => "Customer Information added successfully"
+                // ], 200);
+                return redirect('/customers');
             } else {
 
                 return response()->json([

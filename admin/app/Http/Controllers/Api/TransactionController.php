@@ -19,6 +19,7 @@ class TransactionController extends Controller
         $customer_id = $orders->customer_id;
         $count = Orders::where('customer_id', $customer_id)->count();
         $amount = $sales->total_price;
+
         return view('transactions-create', [
             'sales' => $sales,
             'orders' => $orders,
@@ -55,18 +56,27 @@ class TransactionController extends Controller
             'sale_id'              => 'required',
             'amount_rendered'       => 'required',
         ]);
+
         if ($validator->fails()) {
             return response()->json([
                 'status'    => 422,
                 'errors'    => $validator->messages()
             ], 422);
-        } else {;
+        } else {
 
-            $transaction = Transactions::create([
-                'sale_id'           =>  $request->sale_id,
-                'amount_rendered'   =>  $request->amount_rendered,
-                'change'            =>  $change,
-            ]);
+            if ($request->amount_rendered < $request->total_price) {
+
+                $error = "Ammount Rendered is insufficient. Please try again.";
+                return $error;
+            } else {
+
+                $transaction = Transactions::create([
+                    'sale_id'           =>  $request->sale_id,
+                    'amount_rendered'   =>  $request->amount_rendered,
+                    'change'            =>  $change,
+                ]);
+            }
+
 
             if ($transaction) {
 

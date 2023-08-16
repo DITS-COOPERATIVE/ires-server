@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
+    public function create()
+    {
+        return view('products-create');
+    }
 
     public function index(Request $request)
     {
@@ -61,11 +65,11 @@ class ProductController extends Controller
                 'points'        =>  $request->points
             ]);
             if ($products) {
-
-                return response()->json([
-                    'status'    =>  200,
-                    'message'   => "Product added successfully"
-                ], 200);
+                // return response()->json([
+                //     'status'    =>  200,
+                //     'message'   => "Product added successfully"
+                // ], 200);
+                return redirect('/products');
             } else {
 
                 return response()->json([

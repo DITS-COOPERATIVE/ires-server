@@ -98,6 +98,21 @@ class OrderController extends Controller
         }
     }
 
+    // public function createTransaction(int $id)
+    // {
+    //     $orders = Orders::where('id', $id)->get();
+
+    //     if ($orders) {
+    //         return view('transactions-create', [
+    //             'orders' => $orders->flatten()->first(),
+    //         ]);
+    //     } else {
+    //         return view('orders-view', [
+    //             'orders' => "No Result Found.",
+    //         ]);
+    //     }
+    // }
+
     public function destroy(string $id)
     {
         $orders = Orders::find($id);

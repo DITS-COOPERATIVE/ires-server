@@ -4,7 +4,7 @@
             {{ __('Add Transaction') }}
         </h2>
     </x-slot>
-    <form method="POST" action="{{ route('transactions.add') }}">
+    <form method="POST" action="{{ route('transactions.store') }}">
         @csrf
 
         <!-- Order ID -->

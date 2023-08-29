@@ -4,9 +4,11 @@
             {{ __('Add Customer') }}
         </h2>
     </x-slot>
-    <form method="POST" action="{{ route('customers.add') }}">
+    <form method="POST" action="{{ route('customers.store') }}">
         @csrf
-
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Add Customer') }}
+        </h2>
         <!-- First Name -->
         <div class="mt-4">
             <x-input-label for="first_name" :value="__('First Name')" />

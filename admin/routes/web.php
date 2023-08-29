@@ -30,25 +30,13 @@ Route::get(
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products-view');
-    Route::get('/products-create', [ProductController::class, 'create'])->name('products.create');
-    Route::post('/products/add', [ProductController::class, 'store'])->name('products.add');
-
-    Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
-    Route::get('/customers/{id}', [CustomerController::class, 'show'])->name('customers-view');
-    Route::get('/customers-create', [CustomerController::class, 'create'])->name('customers.create');
-    Route::post('/customers/add', [CustomerController::class, 'store'])->name('customers.add');
-
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders-view');
-    Route::get('/orders-create', [OrderController::class, 'create'])->name('orders.create');
-    Route::post('/orders/add', [OrderController::class, 'store'])->name('orders.add');
-
-    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
-    Route::get('/transactions/{id}', [TransactionController::class, 'show'])->name('transactions-view');
-    Route::get('orders/transactions-create/{id}', [TransactionController::class, 'create',])->name('transactions.create');
-    Route::post('/transactions/add', [TransactionController::class, 'store'])->name('transactions.add');
+    Route::resources([
+        'products'              => ProductController::class,
+        'customers'             => CustomerController::class,
+        'orders'                => OrderController::class,
+        'transactions'          => TransactionController::class,
+        'orders.transactions'   => TransactionController::class,
+    ]);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

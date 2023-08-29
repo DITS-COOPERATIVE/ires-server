@@ -1,28 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers;
 
-use App\Models\Products;
+use App\Models\Services;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Validator;
 
-class ProductController extends Controller
+class ServicesController extends Controller
 {
-    public function create()
-    {
-        return view('products-create');
-    }
-
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $products = Products::all();
-        if ($products->count() > 0) {
+        $services = Services::all();
+        if ($services->count() > 0) {
 
             $data = [
                 'status' => 200,
-                'result' => $products
+                'result' => $services
             ];
         } else {
 
@@ -31,17 +27,27 @@ class ProductController extends Controller
                 'result' => 'No Records Found'
             ];
         }
-        return view('products')->with(['result' => $data['result']]);
+        return view('services')->with(['result' => $data['result']]);
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name'          => 'required|string|max: 191',
-            'code'          => 'required|string|max: 191',
-            'model'         => 'required|string|max: 191',
-            'price'         => 'required|numeric',
-            'quantity'      => 'required|numeric',
+            'type'          => 'required|string|max: 191',
+            'description'   => 'required|string',
+            'fee'           => 'required|numeric',
             'points'        => 'required|numeric',
         ]);
         if ($validator->fails()) {
@@ -50,19 +56,18 @@ class ProductController extends Controller
                 'errors'    => $validator->messages()
             ], 422);
         } else {
-            $products = Products::create([
+            $services = Services::create([
                 'name'          =>  $request->name,
-                'code'          =>  $request->code,
-                'model'         =>  $request->model,
-                'price'         =>  $request->price,
-                'quantity'      =>  $request->quantity,
+                'type'          =>  $request->type,
+                'description'   =>  $request->description,
+                'fee'           =>  $request->fee,
                 'points'        =>  $request->points
             ]);
-            if ($products) {
+            if ($services) {
 
                 $data = [
                     'status'    =>  200,
-                    'message'   => "Product added successfully"
+                    'message'   => "Service added successfully"
                 ];
             } else {
 
@@ -75,14 +80,17 @@ class ProductController extends Controller
         }
     }
 
-    public function show(int $id)
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
-        $products = Products::where('id', $id)->get();
+        $services = Services::where('id', $id)->get();
 
-        if ($products) {
+        if ($services) {
             $data = [
                 'status' => 200,
-                'result' => $products->flatten()->first(),
+                'result' => $services->flatten()->first(),
             ];
         } else {
             $data = [
@@ -90,19 +98,22 @@ class ProductController extends Controller
                 'result' => "No Result Found.",
             ];
         }
-        return view('products-view', [
-            'products' => $data['result'],
+        return view('services-view', [
+            'services' => $data['result'],
         ]);
     }
 
-    public function edit($id)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
-        $products = Products::find($id);
-        if ($products) {
+        $services = Services::find($id);
+        if ($services) {
 
             return response()->json([
                 'status'    =>  200,
-                'userinfo'   => $products
+                'result'   => $services
             ], 200);
         } else {
 
@@ -113,14 +124,16 @@ class ProductController extends Controller
         }
     }
 
-    public function update(Request $request, int $id)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
             'name'          => 'required|string|max: 191',
-            'code'          => 'required|string|max: 191',
-            'model'         => 'required|string|max: 191',
-            'price'         => 'required|numeric',
-            'quantity'      => 'required|numeric',
+            'type'          => 'required|string|max: 191',
+            'description'   => 'required|string',
+            'fee'           => 'required|numeric',
             'points'        => 'required|numeric',
         ]);
 
@@ -131,22 +144,21 @@ class ProductController extends Controller
             ], 422);
         } else {
 
-            $products = Products::find($id);
+            $services = Services::find($id);
 
-            if ($products) {
+            if ($services) {
 
-                $products = Products::find($id)->update([
+                $services = Services::find($id)->update([
                     'name'          =>  $request->name,
-                    'code'          =>  $request->code,
-                    'model'         =>  $request->model,
-                    'price'         =>  $request->price,
-                    'quantity'      =>  $request->quantity,
+                    'type'          =>  $request->type,
+                    'description'   =>  $request->description,
+                    'fee'           =>  $request->fee,
                     'points'        =>  $request->points
                 ]);
 
                 return response()->json([
                     'status'    =>  200,
-                    'message'   => "Product updated successfully"
+                    'message'   => "Service updated successfully"
                 ], 200);
             } else {
 
@@ -158,14 +170,17 @@ class ProductController extends Controller
         }
     }
 
-    public function destroy($id)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
     {
-        $products = Products::find($id);
-        if ($products) {
-            $products->delete();
+        $services = Services::find($id);
+        if ($services) {
+            $services->delete();
             return response()->json([
                 'status'    =>  200,
-                'message'   => "Product deleted successfully!"
+                'message'   => "Service deleted successfully!"
             ], 200);
         } else {
 

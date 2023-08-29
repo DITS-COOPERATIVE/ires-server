@@ -65,7 +65,7 @@ class OrderController extends Controller
 
             if ($orders) {
 
-                $product    = Products::find($orders->product_id);
+                $product = Products::find($orders->product_id);
 
                 Sales::create([
                     'order_id'      =>  $orders->id,
@@ -83,7 +83,7 @@ class OrderController extends Controller
         }
     }
 
-    public function show(int $id)
+    public function show(string $id)
     {
         $orders = Orders::where('id', $id)->get();
 
@@ -97,21 +97,6 @@ class OrderController extends Controller
             ]);
         }
     }
-
-    // public function createTransaction(int $id)
-    // {
-    //     $orders = Orders::where('id', $id)->get();
-
-    //     if ($orders) {
-    //         return view('transactions-create', [
-    //             'orders' => $orders->flatten()->first(),
-    //         ]);
-    //     } else {
-    //         return view('orders-view', [
-    //             'orders' => "No Result Found.",
-    //         ]);
-    //     }
-    // }
 
     public function destroy(string $id)
     {

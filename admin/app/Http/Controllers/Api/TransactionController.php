@@ -17,6 +17,7 @@ class TransactionController extends Controller
         $sales = Sales::with('orders')->where('id', $id)->get()->flatten()->first();
         $orders = $sales->orders->flatten()->first();
         $customer_id = $orders->customer_id;
+
         $count = Orders::where('customer_id', $customer_id)->count();
         $amount = $sales->total_price;
 

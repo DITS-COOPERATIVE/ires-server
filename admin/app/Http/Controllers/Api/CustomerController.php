@@ -14,27 +14,35 @@ class CustomerController extends Controller
         return view('customers-create');
     }
 
-    public function index(Request $request)
+    public function index()
     {
         $customers = Customers::all();
 
         if ($customers->count() > 0) {
-            $response = [
+
+            $data = response()->json([
                 'status' => 200,
                 'result' => $customers
-            ];
+            ], 200);
+
+            // $response = [
+            //     'status' => 200,
+            //     'result' => $customers
+            // ];
         } else {
 
-            $response = [
+            $data = response()->json([
                 'status' => 404,
                 'result' => 'No Records Found'
-            ];
-        }
+            ], 404);
 
-        return view('customers', [
-            'customers' => $customers,
-            'result' => $response['result'],
-        ]);
+            // $response = [
+            //     'status' => 404,
+            //     'result' => 'No Records Found'
+            // ];
+        }
+            return $data;
+
     }
     public function store(Request $request)
     {
@@ -83,10 +91,22 @@ class CustomerController extends Controller
         $customers = Customers::where('id', $id)->get();
 
         if ($customers) {
+
+            // return response()->json([
+            //     'status'    => 200,
+            //     'result'    => $customers
+            // ], 200);
+
             return view('customers-view', [
                 'customers' => $customers->flatten()->first(),
             ]);
         } else {
+
+            // return response()->json([
+            //     'status'    => 404,
+            //     'result'    => "No Result Found",
+            // ], 404);
+
             return view('customers-view', [
                 'customers' => "No Result Found.",
             ]);
@@ -164,7 +184,9 @@ class CustomerController extends Controller
     {
         $customers = Customers::find($id);
         if ($customers) {
+
             $customers->delete();
+
             return response()->json([
                 'status'    =>  200,
                 'message'   => "Customer Information deleted successfully"

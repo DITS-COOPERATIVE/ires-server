@@ -1,12 +1,16 @@
 <x-guest-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Add Order') }}
+            {{ __('Add Products') }}
         </h2>
     </x-slot>
-    <form method="POST" action="{{ route('orders.add') }}">
+    <form method="POST" action="{{ route('orders.store') }}">
         @csrf
-
+        <div>
+            <h1 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                {{ __('Add Order') }}
+            </h1>
+        </div>
         <!-- Product ID -->
         <div>
             <x-input-label for="product_id" :value="__('Product ID')" />

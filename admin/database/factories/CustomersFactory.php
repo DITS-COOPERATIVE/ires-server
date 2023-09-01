@@ -21,6 +21,7 @@ class CustomersFactory extends Factory
     public function definition(): array
     {
         $gender = $this->faker->randomElement(['male', 'female']);
+        $privilege = $this->faker->randomElement(['none','senior', 'student','pwd']);
         return [
             'first_name' => $this->faker->firstName($gender),
             'last_name' => $this->faker->lastName(),
@@ -30,6 +31,7 @@ class CustomersFactory extends Factory
             'mobile_no'=>$this->faker->phoneNumber(),
             'address'=>$this->faker->address(),
             'points'=>$this->faker->randomFloat(2,1000,99),
+            'privilege'=>$privilege,
         ];
     }
 }

@@ -22,25 +22,17 @@ class OrderController extends Controller
 
         if ($orders->count() > 0) {
 
-            $data = [
+            return response()->json([
                 'status' => 200,
                 'result' => $orders,
-            ];
-            // return response()->json($data, 200);
+            ], 200);
 
         } else {
-
-            $data = [
+             return response()->json([
                 'status' => 404,
-                'result' => 'No Records Found'
-            ];
-            // return response()->json($data, 404);
+                'result' => 'No Records Found',
+             ], 404);
         }
-        return view('orders', [
-            'orders' => $orders,
-            'status' => $data['status'],
-            'result' => $data['result'],
-        ]);
     }
 
     public function store(Request $request)
@@ -72,7 +64,12 @@ class OrderController extends Controller
                     'total_price'   =>  $product->price * $orders->quantity,
                     'total_points'  =>  $product->points * $orders->quantity,
                 ]);
-                return redirect('/orders');
+
+                return response()->json([
+                    'status'    =>  200,
+                    'message'   => "Order added Successfully"
+                ], 200);
+
             } else {
 
                 return response()->json([
@@ -88,13 +85,18 @@ class OrderController extends Controller
         $orders = Orders::where('id', $id)->get();
 
         if ($orders) {
-            return view('orders-view', [
-                'orders' => $orders->flatten()->first(),
-            ]);
+
+            return response()->json([
+                'status' => 200,
+                'result' => $orders->flatten()->first(),
+            ], 200);
+
         } else {
-            return view('orders-view', [
-                'orders' => "No Result Found.",
-            ]);
+
+            return response()->json([
+                'status' => 404,
+                'result' => "Order Not Found"
+            ], 404);
         }
     }
 

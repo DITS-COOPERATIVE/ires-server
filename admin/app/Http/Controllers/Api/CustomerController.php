@@ -20,28 +20,19 @@ class CustomerController extends Controller
 
         if ($customers->count() > 0) {
 
-            $data = response()->json([
+           return response()->json([
                 'status' => 200,
                 'result' => $customers
             ], 200);
 
-            // $response = [
-            //     'status' => 200,
-            //     'result' => $customers
-            // ];
         } else {
 
-            $data = response()->json([
+            return response()->json([
                 'status' => 404,
                 'result' => 'No Records Found'
             ], 404);
 
-            // $response = [
-            //     'status' => 404,
-            //     'result' => 'No Records Found'
-            // ];
         }
-            return $data;
 
     }
     public function store(Request $request)
@@ -54,6 +45,7 @@ class CustomerController extends Controller
             'mobile_no'     => 'required',
             'address'       => 'required',
             'birth_date'    => 'required',
+            'privilege'    => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -69,20 +61,23 @@ class CustomerController extends Controller
                 'birth_date'    =>  $request->birth_date,
                 'mobile_no'     =>  $request->mobile_no,
                 'address'       =>  $request->address,
+                'privilege'     =>  $request->privilege,
                 'points'        =>  0,
             ]);
             if ($customers) {
-                // return response()->json([
-                //     'status'    =>  200,
-                //     'message'   => "Customer Information added successfully"
-                // ], 200);
-                return redirect('/customers');
+
+                return response()->json([
+                    'status'    =>  200,
+                    'message'   => "Customer Information added successfully"
+                ], 200);
+
             } else {
 
                 return response()->json([
                     'status'    =>  500,
                     'message'   => "Something went wrong!"
                 ], 500);
+            
             }
         }
     }
@@ -92,24 +87,18 @@ class CustomerController extends Controller
 
         if ($customers) {
 
-            // return response()->json([
-            //     'status'    => 200,
-            //     'result'    => $customers
-            // ], 200);
+            return response()->json([
+                'status'    => 200,
+                'result'    => $customers
+            ], 200);
 
-            return view('customers-view', [
-                'customers' => $customers->flatten()->first(),
-            ]);
         } else {
 
-            // return response()->json([
-            //     'status'    => 404,
-            //     'result'    => "No Result Found",
-            // ], 404);
-
-            return view('customers-view', [
-                'customers' => "No Result Found.",
-            ]);
+            return response()->json([
+                'status'    => 404,
+                'result'    => "No Result Found",
+            ], 404);
+            
         }
     }
 
@@ -142,6 +131,7 @@ class CustomerController extends Controller
             'points'        => 'required',
             'address'       => 'required',
             'birth_date'    => 'required',
+            'privilege'     => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -163,6 +153,7 @@ class CustomerController extends Controller
                     'birth_date'    =>  $request->birth_date,
                     'mobile_no'     =>  $request->mobile_no,
                     'address'       =>  $request->address,
+                    'privilege'     =>  $request->privilege,
                     'points'       =>  $request->points
                 ]);
 

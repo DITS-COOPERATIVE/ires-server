@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('mobile_no');
             $table->string('birth_date');
             $table->string('address');
+            $table->string('privilege');
             $table->float('points');
             $table->timestamps();
         });

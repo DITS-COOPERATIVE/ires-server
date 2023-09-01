@@ -16,19 +16,25 @@ class ServicesController extends Controller
         $services = Services::all();
         if ($services->count() > 0) {
 
-            $data = [
-                'status' => 200,
-                'result' => $services
-            ];
+
+            $services = Services::all();
+
+            if ($services->count() > 0) {
+    
+            return response()->json([
+                'status'    =>  200,
+                'result'   => $services
+            ], 200);
+
         } else {
 
-            $data = [
-                'status' => 404,
-                'result' => 'No Records Found'
-            ];
+            return response()->json([
+                'status'    =>  404,
+                'result'   => "No record found."
+            ], 404);
         }
-        return view('services')->with(['result' => $data['result']]);
     }
+}
 
     /**
      * Show the form for creating a new resource.
@@ -65,18 +71,18 @@ class ServicesController extends Controller
             ]);
             if ($services) {
 
-                $data = [
+                return response()->json([
                     'status'    =>  200,
                     'message'   => "Service added successfully"
-                ];
+                ], 200);
+
             } else {
 
-                $data = [
+                return response()->json([
                     'status'    =>  500,
                     'message'   => "Something went wrong!"
-                ];
+                ], 500);
             }
-            return redirect(route('products.index'))->with(['data' => $data]);
         }
     }
 
@@ -88,19 +94,19 @@ class ServicesController extends Controller
         $services = Services::where('id', $id)->get();
 
         if ($services) {
-            $data = [
+
+            return response()->json([
                 'status' => 200,
-                'result' => $services->flatten()->first(),
-            ];
+                'result' => $services,
+            ], 200);
+            
         } else {
-            $data = [
+
+            return response()->json([
                 'status' => 404,
                 'result' => "No Result Found.",
-            ];
+            ]);
         }
-        return view('services-view', [
-            'services' => $data['result'],
-        ]);
     }
 
     /**
@@ -160,12 +166,14 @@ class ServicesController extends Controller
                     'status'    =>  200,
                     'message'   => "Service updated successfully"
                 ], 200);
+
             } else {
 
                 return response()->json([
                     'status'    =>  404,
                     'message'   => "Data not Found!"
                 ], 404);
+                
             }
         }
     }

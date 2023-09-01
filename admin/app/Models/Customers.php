@@ -20,6 +20,7 @@ class Customers extends Model
         'birth_date',
         'mobile_no',
         'address',
+        'privilege',
         'points',
     ];
     

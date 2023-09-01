@@ -20,18 +20,17 @@ class ProductController extends Controller
         $products = Products::all();
         if ($products->count() > 0) {
 
-            $data = [
-                'status' => 200,
-                'result' => $products
-            ];
+            return response()->json([
+                'status'    =>  200,
+                'result'   => $products
+            ], 200);
         } else {
 
-            $data = [
-                'status' => 404,
-                'result' => 'No Records Found'
-            ];
+            return response()->json([
+                'status'    =>  404,
+                'result'   => "No record found."
+            ], 404);
         }
-        return view('products')->with(['result' => $data['result']]);
     }
 
     public function store(Request $request)
@@ -58,20 +57,22 @@ class ProductController extends Controller
                 'quantity'      =>  $request->quantity,
                 'points'        =>  $request->points
             ]);
+
             if ($products) {
 
-                $data = [
+                return response()->json([
                     'status'    =>  200,
-                    'message'   => "Product added successfully"
-                ];
+                    'result'   => "Product Added Successfully"
+                ], 200);
+                
             } else {
 
-                $data = [
+                return response()->json([
                     'status'    =>  500,
-                    'message'   => "Something went wrong!"
-                ];
+                    'result'   =>  "Error. Something went wrong."
+                ], 500);
+
             }
-            return redirect(route('products.index'))->with(['data' => $data]);
         }
     }
 
@@ -80,35 +81,37 @@ class ProductController extends Controller
         $products = Products::where('id', $id)->get();
 
         if ($products) {
-            $data = [
-                'status' => 200,
-                'result' => $products->flatten()->first(),
-            ];
-        } else {
-            $data = [
-                'status' => 404,
-                'result' => "No Result Found.",
-            ];
-        }
-        return view('products-view', [
-            'products' => $data['result'],
-        ]);
-    }
-
-    public function edit($id)
-    {
-        $products = Products::find($id);
-        if ($products) {
 
             return response()->json([
-                'status'    =>  200,
-                'userinfo'   => $products
-            ], 200);
+                    'status'    =>  200,
+                    'result'   => $products
+                ], 200);
+
         } else {
 
             return response()->json([
                 'status'    =>  404,
-                'message'   => "No Data Found!"
+                'result'   => "No Record Found."
+            ], 404);
+
+        }
+    }
+
+    public function edit(int $id)
+    {
+        $products = Products::where('id', $id)->get();
+        if ($products) {
+
+            return response()->json([
+                'status'    =>  200,
+                'result'   => $products
+            ], 200);
+
+        } else {
+
+            return response()->json([
+                'status'    =>  404,
+                'result'   => "No Data Found!"
             ], 404);
         }
     }

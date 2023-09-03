@@ -45,7 +45,7 @@ class CustomerController extends Controller
             'mobile_no'     => 'required',
             'address'       => 'required',
             'birth_date'    => 'required',
-            'privilege'    => 'required',
+            'privilege'     => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -154,7 +154,7 @@ class CustomerController extends Controller
                     'mobile_no'     =>  $request->mobile_no,
                     'address'       =>  $request->address,
                     'privilege'     =>  $request->privilege,
-                    'points'       =>  $request->points
+                    'points'        =>  $request->points
                 ]);
 
                 return response()->json([

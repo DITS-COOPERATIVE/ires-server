@@ -24,7 +24,7 @@ class OrderController extends Controller
 
             return response()->json([
                 'status' => 200,
-                'result' => $orders,
+                'result' => $orders->flatten(),
             ], 200);
 
         } else {

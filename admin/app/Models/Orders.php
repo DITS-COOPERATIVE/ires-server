@@ -19,7 +19,7 @@ class Orders extends Model
 
     public function product()
     {
-        return $this->hasMany(Products::class, 'id', 'product_id');
+        return $this->hasOne(Products::class, 'id', 'product_id');
     }
     public function customer()
     {

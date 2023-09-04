@@ -18,13 +18,13 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Orders::with('product', 'customer', 'sale')->get();
+        $orders = Orders::with('product', 'customer')->get();
 
         if ($orders->count() > 0) {
 
             return response()->json([
                 'status' => 200,
-                'result' => $orders->flatten(),
+                'result' => $orders,
             ], 200);
 
         } else {

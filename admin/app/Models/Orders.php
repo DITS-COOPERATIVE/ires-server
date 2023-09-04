@@ -25,9 +25,4 @@ class Orders extends Model
     {
         return $this->hasOne(Customers::class, 'id', 'customer_id');
     }
-    public function sale()
-    {
-        return $this->belongsTo(Sales::class, 'id');
-    }
-    
 }

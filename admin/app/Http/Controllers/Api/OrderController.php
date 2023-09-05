@@ -7,6 +7,7 @@ use App\Models\Orders;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Customers;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
@@ -37,17 +38,28 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
+        $customer = Customers::find($request->customer_id);
+        $product = Products::find($request->product_id);
+
         $validator = Validator::make($request->all(), [
             'product_id'            => 'required',
             'customer_id'           => 'required',
             'quantity'              => 'required',
         ]);
         if ($validator->fails()) {
+
             return response()->json([
                 'status'    => 422,
                 'errors'    => $validator->messages()
             ], 422);
         } else {
+
+            if (!$customer||!$product) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Data not found. Try again'
+                ], 404);
+            }
 
             $orders = Orders::create([
                 'customer_id'       =>  $request->customer_id,
@@ -59,16 +71,30 @@ class OrderController extends Controller
 
                 $product = Products::find($orders->product_id);
 
-                Sales::create([
-                    'order_id'      =>  $orders->id,
-                    'total_price'   =>  $product->price * $orders->quantity,
-                    'total_points'  =>  $product->points * $orders->quantity,
-                ]);
+                if ($product->quantity < $orders->quantity) {
 
-                return response()->json([
-                    'status'    =>  200,
-                    'message'   => "Order added Successfully"
-                ], 200);
+                    return response()->json([
+                        'status' => 404,
+                        'message' => 'Stock is not sufficient. Try again'
+                    ], 404);
+    
+                } else {
+
+                    Sales::create([
+                        'order_id'      =>  $orders->id,
+                        'total_price'   =>  $product->price * $orders->quantity,
+                        'total_points'  =>  $product->points * $orders->quantity,
+                    ]);
+    
+                    $new_quantity = $product->quantity - $orders->quantity;
+                    $product->quantity = $new_quantity;
+                    $product->save();
+    
+                    return response()->json([
+                        'status'    =>  200,
+                        'message'   => "Order added Successfully"
+                    ], 200);
+                }
 
             } else {
 
@@ -103,11 +129,18 @@ class OrderController extends Controller
     public function destroy(string $id)
     {
         $orders = Orders::find($id);
+        $product = Products::find($orders->product_id);
+
         if ($orders) {
+
+            $return_order_quantity = $orders->quantity + $product->quantity;
+            $product->quantity = $return_order_quantity;
+            $product->save();
+
             $orders->delete();
-            return response()->json([
+            return response()->json([   
                 'status'    =>  200,
-                'message'   => "Order deleted successfully"
+                'message'   => ["Order deleted successfully", $product->quantity]
             ], 200);
         } else {
 

@@ -65,6 +65,7 @@ class OrderController extends Controller
                 'customer_id'       =>  $request->customer_id,
                 'product_id'        =>  $request->product_id,
                 'quantity'          =>  $request->quantity,
+                'status'            =>  "PENDING",
             ]);
 
             if ($orders) {

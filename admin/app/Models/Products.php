@@ -18,5 +18,6 @@ class Products extends Model
         'price',
         'quantity',
         'points',
+        'image',
     ];
 }

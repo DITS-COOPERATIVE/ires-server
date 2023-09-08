@@ -15,6 +15,7 @@ class Orders extends Model
         'customer_id',
         'product_id',
         'quantity',
+        'status'
     ];
 
     public function product()

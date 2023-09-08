@@ -22,6 +22,7 @@ class Customers extends Model
         'address',
         'privilege',
         'points',
+        'image',
     ];
     
 }

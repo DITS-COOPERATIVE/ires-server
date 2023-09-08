@@ -36,14 +36,14 @@ class TransactionController extends Controller
 
             return response()->json([
                 'status' => 200,
-                'result' => $transactions->flatten(),
-            ]);
+                'result' => $transactions,
+            ],200);
         } else {
             
             return response()->json([
                 'status' => 404,
-                'result' => 'No Records Found'
-            ]);
+                'result' => 'No Records Found',
+            ],404);
         }
     }
     public function store(Request $request)

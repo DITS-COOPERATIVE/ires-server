@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('privilege');
             $table->float('points');
+            $table->string('image');
             $table->timestamps();
         });
     }

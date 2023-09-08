@@ -32,6 +32,7 @@ class CustomersFactory extends Factory
             'address'=>$this->faker->address(),
             'points'=>$this->faker->randomFloat(2,1000,99),
             'privilege'=>$privilege,
+            'image'=>$this->faker->regexify('[A-Z]{5}[0-4]{3}'),
         ];
     }
 }

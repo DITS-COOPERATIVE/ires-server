@@ -2,29 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Services;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ServicesController extends Controller
+class ServiceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $services = Services::all();
-        if ($services->count() > 0) {
+        $Service = Service::all();
+        
+        if ($Service->count() > 0) {
 
 
-            $services = Services::all();
+            $Service = Service::all();
 
-            if ($services->count() > 0) {
+            if ($Service->count() > 0) {
     
-            return response()->json([
-                'status'    =>  200,
-                'result'   => $services
-            ], 200);
+            return $Service;
 
         } else {
 
@@ -62,26 +60,20 @@ class ServicesController extends Controller
                 'errors'    => $validator->messages()
             ], 422);
         } else {
-            $services = Services::create([
+            $Service = Service::create([
                 'name'          =>  $request->name,
                 'type'          =>  $request->type,
                 'description'   =>  $request->description,
                 'fee'           =>  $request->fee,
                 'points'        =>  $request->points
             ]);
-            if ($services) {
+            if ($Service) {
 
-                return response()->json([
-                    'status'    =>  200,
-                    'message'   => "Service added successfully"
-                ], 200);
+                return $Service;
 
             } else {
 
-                return response()->json([
-                    'status'    =>  500,
-                    'message'   => "Something went wrong!"
-                ], 500);
+                return $Service;
             }
         }
     }
@@ -91,21 +83,15 @@ class ServicesController extends Controller
      */
     public function show(string $id)
     {
-        $services = Services::where('id', $id)->get();
+        $Service = Service::where('id', $id)->get();
 
-        if ($services) {
+        if ($Service) {
 
-            return response()->json([
-                'status' => 200,
-                'result' => $services,
-            ], 200);
+            return $Service;
             
         } else {
 
-            return response()->json([
-                'status' => 404,
-                'result' => "No Result Found.",
-            ]);
+            return $Service;
         }
     }
 
@@ -114,19 +100,14 @@ class ServicesController extends Controller
      */
     public function edit(string $id)
     {
-        $services = Services::find($id);
-        if ($services) {
+        $Service = Service::find($id);
+        if ($Service) {
 
-            return response()->json([
-                'status'    =>  200,
-                'result'   => $services
-            ], 200);
+            return $Service;
+
         } else {
 
-            return response()->json([
-                'status'    =>  404,
-                'message'   => "No Data Found!"
-            ], 404);
+            return $Service;
         }
     }
 
@@ -150,11 +131,11 @@ class ServicesController extends Controller
             ], 422);
         } else {
 
-            $services = Services::find($id);
+            $Service = Service::find($id);
 
-            if ($services) {
+            if ($Service) {
 
-                $services = Services::find($id)->update([
+                $Service = Service::find($id)->update([
                     'name'          =>  $request->name,
                     'type'          =>  $request->type,
                     'description'   =>  $request->description,
@@ -162,17 +143,11 @@ class ServicesController extends Controller
                     'points'        =>  $request->points
                 ]);
 
-                return response()->json([
-                    'status'    =>  200,
-                    'message'   => "Service updated successfully"
-                ], 200);
+                return $Service;
 
             } else {
 
-                return response()->json([
-                    'status'    =>  404,
-                    'message'   => "Data not Found!"
-                ], 404);
+                return $Service;
                 
             }
         }
@@ -183,19 +158,17 @@ class ServicesController extends Controller
      */
     public function destroy(string $id)
     {
-        $services = Services::find($id);
-        if ($services) {
-            $services->delete();
-            return response()->json([
-                'status'    =>  200,
-                'message'   => "Service deleted successfully!"
-            ], 200);
+        $Service = Service::find($id);
+
+        if ($Service) {
+
+            $Service->delete();
+
+            return $Service;
+
         } else {
 
-            return response()->json([
-                'status'    =>  404,
-                'message'   => "No Data Found!"
-            ], 404);
+            return $Service;
         }
     }
 }

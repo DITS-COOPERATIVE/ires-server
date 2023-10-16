@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\api;
 
 use App\Models\Products;
-use App\Models\Customers;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\Orders;
+use App\Models\Product;
 
 class DashboardController extends Controller
 {
     public function show()
     {
-        $customers = Customers::all();
+        $customers = Customer::all();
 
         if ($customers->count() > 0) {
 
@@ -31,7 +33,7 @@ class DashboardController extends Controller
 
         $total_customers = $response['result'];
 
-        $products = Products::all();
+        $products = Product::all();
 
         if ($products->count() > 0) {
 
@@ -50,7 +52,7 @@ class DashboardController extends Controller
 
         $total_products = $response['result'];
 
-        $orders = Orders::all();
+        $orders = Order::all();
 
         if ($orders->count() > 0) {
 

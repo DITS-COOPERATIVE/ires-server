@@ -6,18 +6,23 @@ use App\Models\Transactions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Products extends Model
+class Customer extends Model
 {
     use HasFactory;
-    protected $table = "products";
+    
+    protected $table = "customers";
 
     protected $fillable = [
-        'name',
-        'code',
-        'model',
-        'price',
-        'quantity',
+        'first_name',
+        'last_name',
+        'gender',
+        'email',
+        'birth_date',
+        'mobile_no',
+        'address',
+        'privilege',
         'points',
         'image',
     ];
+    
 }

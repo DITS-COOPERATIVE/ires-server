@@ -2,33 +2,28 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Models\Sales;
+use App\Models\Sale;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class SalesController extends Controller
+class SaleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $sales = Sales::with('orders','orders.customer', 'orders.product')->get();
-        if ($sales->count() > 0) {
+        $Sale = Sale::with('orders','orders.customer', 'orders.product')->get();
+
+        if ($Sale->count() > 0) {
             
-            if ($sales->count() > 0) {
+            if ($Sale->count() > 0) {
     
-            return response()->json([
-                'status'    =>  200,
-                'result'    => $sales->flatten()
-            ], 200);
+            return $Sale;
 
         } else {
 
-            return response()->json([
-                'status'    =>  404,
-                'result'   => "No record found."
-            ], 404);
+            return $Sale;
         }
     }
 }

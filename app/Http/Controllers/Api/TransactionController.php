@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Models\Sales;
+use App\Models\Sale;
 use App\Models\Customers;
-use App\Models\Transactions;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Orders;
+use App\Models\Customer;
+use App\Models\Order;
 use Illuminate\Support\Facades\Validator;
 
 class TransactionController extends Controller
 {
     public function create($id)
     {
-        $sales = Sales::with('orders')->where('id', $id)->get()->flatten()->first();
-        $orders = $sales->orders->flatten()->first();
-        $customer_id = $orders->customer_id;
+        $Sale = Sale::with('Order')->where('id', $id)->get()->flatten()->first();
+        $Order = $Sale->Order->flatten()->first();
+        $customer_id = $Order->customer_id;
 
-        $count = Orders::where('customer_id', $customer_id)->count();
-        $amount = $sales->total_price;
+        $count = Order::where('customer_id', $customer_id)->count();
+        $amount = $Sale->total_price;
 
-        return view('transactions-create', [
-            'sales' => $sales,
-            'orders' => $orders,
+        return view('Transaction-create', [
+            'Sale' => $Sale,
+            'Order' => $Order,
             'amount' => $amount,
             'count' => $count,
         ]);
@@ -31,25 +32,22 @@ class TransactionController extends Controller
 
     public function index()
     {
-        $transactions = Transactions::with('sale.orders.customer','sale.orders.product')->get();
-        if ($transactions->count() > 0) {
+        $Transaction = Transaction::with('sale.Order.customer','sale.Order.product')->get();
 
-            return response()->json([
-                'status' => 200,
-                'result' => $transactions,
-            ],200);
+        if ($Transaction->count() > 0) {
+
+            return $Transaction;
+
         } else {
             
-            return response()->json([
-                'status' => 404,
-                'result' => 'No Records Found',
-            ],404);
+            return $Transaction;
+
         }
     }
     public function store(Request $request)
     {
-        $sales = Sales::where('id', '=', $request->sale_id)->first();
-        $total_price = $sales->total_price;
+        $Sale = Sale::where('id', '=', $request->sale_id)->first();
+        $total_price = $Sale->total_price;
         $change = $request->amount_rendered - $total_price;
 
         $validator = Validator::make($request->all(), [
@@ -69,13 +67,12 @@ class TransactionController extends Controller
                 $error = "Ammount Rendered is insufficient. Please try again.";
 
                 return response()->json([
-                    'status'    =>  400,
                     'message'   => $error,
-                ], 400);
+                ]);
 
             } else {
 
-                $transaction = Transactions::create([
+                $transaction = Transaction::create([
                     'sale_id'           =>  $request->sale_id,
                     'amount_rendered'   =>  $request->amount_rendered,
                     'change'            =>  $change,
@@ -85,7 +82,7 @@ class TransactionController extends Controller
 
             if ($transaction) {
 
-                $points = Transactions::with([
+                $points = Transaction::with([
                     'sale' => function ($query) {
                         $query->select('id', 'total_points');
                     }
@@ -95,17 +92,17 @@ class TransactionController extends Controller
                     ->first()
                     ->value('total_points');
 
-                $customer_id = Transactions::with([
-                    'sale.orders' => function ($query) {
+                $customer_id = Transaction::with([
+                    'sale.Order' => function ($query) {
                         $query->select('id', 'customer_id');
                     }
                 ])
                     ->get()
-                    ->pluck('sale.orders')
+                    ->pluck('sale.Order')
                     ->first()
                     ->value('customer_id');
 
-                $customer = Customers::where('id', '=', $customer_id)->first();
+                $customer = Customer::where('id', '=', $customer_id)->first();
                 $new_points = $customer->points + $points;
                 $customer->points = $new_points;
                 $customer->save();
@@ -126,7 +123,7 @@ class TransactionController extends Controller
 
     public function show($id)
     {
-        $transaction = Transactions::find($id);
+        $transaction = Transaction::find($id);
         if ($transaction) {
             return response()->json([
                 'status'    =>  200,
@@ -142,9 +139,9 @@ class TransactionController extends Controller
 
     public function destroy(string $id)
     {
-        $transactions = Transactions::find($id);
-        if ($transactions) {
-            $transactions->delete();
+        $Transaction = Transaction::find($id);
+        if ($Transaction) {
+            $Transaction->delete();
             return response()->json([
                 'status'    =>  200,
                 'message'   => "Transaction Delete successfully!"

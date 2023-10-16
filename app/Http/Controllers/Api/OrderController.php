@@ -2,30 +2,26 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Models\Sales;
-use App\Models\Orders;
-use App\Models\Products;
+use App\Models\Sale;
+use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Customers;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
-    public function create()
-    {
-        return view('orders-create');
-    }
 
     public function index()
     {
-        $orders = Orders::with('product', 'customer')->get();
+        $Order = Order::with('product', 'customer')->get();
 
-        if ($orders->count() > 0) {
+        if ($Order->count() > 0) {
 
             return response()->json([
                 'status' => 200,
-                'result' => $orders,
+                'result' => $Order,
             ], 200);
 
         } else {
@@ -38,8 +34,8 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        $customer = Customers::find($request->customer_id);
-        $product = Products::find($request->product_id);
+        $customer = Customer::find($request->customer_id);
+        $product = Product::find($request->product_id);
 
         $validator = Validator::make($request->all(), [
             'product_id'            => 'required',
@@ -61,18 +57,18 @@ class OrderController extends Controller
                 ], 404);
             }
 
-            $orders = Orders::create([
+            $Order = Order::create([
                 'customer_id'       =>  $request->customer_id,
                 'product_id'        =>  $request->product_id,
                 'quantity'          =>  $request->quantity,
                 'status'            =>  "PENDING",
             ]);
 
-            if ($orders) {
+            if ($Order) {
 
-                $product = Products::find($orders->product_id);
+                $product = Product::find($Order->product_id);
 
-                if ($product->quantity < $orders->quantity) {
+                if ($product->quantity < $Order->quantity) {
 
                     return response()->json([
                         'status' => 404,
@@ -81,13 +77,13 @@ class OrderController extends Controller
     
                 } else {
 
-                    Sales::create([
-                        'order_id'      =>  $orders->id,
-                        'total_price'   =>  $product->price * $orders->quantity,
-                        'total_points'  =>  $product->points * $orders->quantity,
+                    Sale::create([
+                        'order_id'      =>  $Order->id,
+                        'total_price'   =>  $product->price * $Order->quantity,
+                        'total_points'  =>  $product->points * $Order->quantity,
                     ]);
     
-                    $new_quantity = $product->quantity - $orders->quantity;
+                    $new_quantity = $product->quantity - $Order->quantity;
                     $product->quantity = $new_quantity;
                     $product->save();
     
@@ -109,13 +105,13 @@ class OrderController extends Controller
 
     public function show(string $id)
     {
-        $orders = Orders::where('id', $id)->get();
+        $Order = Order::where('id', $id)->get();
 
-        if ($orders) {
+        if ($Order) {
 
             return response()->json([
                 'status' => 200,
-                'result' => $orders->flatten()->first(),
+                'result' => $Order->flatten()->first(),
             ], 200);
 
         } else {
@@ -129,16 +125,16 @@ class OrderController extends Controller
 
     public function destroy(string $id)
     {
-        $orders = Orders::find($id);
-        $product = Products::find($orders->product_id);
+        $Order = Order::find($id);
+        $product = Product::find($Order->product_id);
 
-        if ($orders) {
+        if ($Order) {
 
-            $return_order_quantity = $orders->quantity + $product->quantity;
+            $return_order_quantity = $Order->quantity + $product->quantity;
             $product->quantity = $return_order_quantity;
             $product->save();
 
-            $orders->delete();
+            $Order->delete();
             return response()->json([   
                 'status'    =>  200,
                 'message'   => ["Order deleted successfully", $product->quantity]

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Models\Products;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Routing\Route;
@@ -10,26 +10,16 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
-    public function create()
-    {
-        return view('products-create');
-    }
 
     public function index()
     {
-        $products = Products::all();
-        if ($products->count() > 0) {
+        $Product = Product::all();
+        if ($Product->count() > 0) {
 
-            return response()->json([
-                'status'    =>  200,
-                'result'   => $products
-            ], 200);
+            return $Product;
         } else {
 
-            return response()->json([
-                'status'    =>  404,
-                'result'   => "No record found."
-            ], 404);
+            return $Product;
         }
     }
 
@@ -49,7 +39,7 @@ class ProductController extends Controller
                 'errors'    => $validator->messages()
             ], 422);
         } else {
-            $products = Products::create([
+            $Product = Product::create([
                 'name'          =>  $request->name,
                 'code'          =>  $request->code,
                 'model'         =>  $request->model,
@@ -58,19 +48,13 @@ class ProductController extends Controller
                 'points'        =>  $request->points
             ]);
 
-            if ($products) {
+            if ($Product) {
 
-                return response()->json([
-                    'status'    =>  200,
-                    'result'   => "Product Added Successfully"
-                ], 200);
+                return $Product;
                 
             } else {
 
-                return response()->json([
-                    'status'    =>  500,
-                    'result'   =>  "Error. Something went wrong."
-                ], 500);
+                return $Product;
 
             }
         }
@@ -78,41 +62,29 @@ class ProductController extends Controller
 
     public function show(int $id)
     {
-        $products = Products::where('id', $id)->get();
+        $Product = Product::where('id', $id)->get();
 
-        if ($products) {
+        if ($Product) {
 
-            return response()->json([
-                    'status'    =>  200,
-                    'result'   => $products
-                ], 200);
+            return $Product;
 
         } else {
 
-            return response()->json([
-                'status'    =>  404,
-                'result'   => "No Record Found."
-            ], 404);
+            return $Product;
 
         }
     }
 
     public function edit(int $id)
     {
-        $products = Products::where('id', $id)->get();
-        if ($products) {
+        $Product = Product::where('id', $id)->get();
+        if ($Product) {
 
-            return response()->json([
-                'status'    =>  200,
-                'result'   => $products
-            ], 200);
+            return $Product;
 
         } else {
 
-            return response()->json([
-                'status'    =>  404,
-                'result'   => "No Data Found!"
-            ], 404);
+            return $Product;
         }
     }
 
@@ -134,11 +106,11 @@ class ProductController extends Controller
             ], 422);
         } else {
 
-            $products = Products::find($id);
+            $Product = Product::find($id);
 
-            if ($products) {
+            if ($Product) {
 
-                $products = Products::find($id)->update([
+                $Product = Product::find($id)->update([
                     'name'          =>  $request->name,
                     'code'          =>  $request->code,
                     'model'         =>  $request->model,
@@ -147,35 +119,29 @@ class ProductController extends Controller
                     'points'        =>  $request->points
                 ]);
 
-                return response()->json([
-                    'status'    =>  200,
-                    'message'   => "Product updated successfully"
-                ], 200);
+                return $Product;
+
             } else {
 
-                return response()->json([
-                    'status'    =>  404,
-                    'message'   => "Data not Found!"
-                ], 404);
+                return $Product;
+                
             }
         }
     }
 
     public function destroy($id)
     {
-        $products = Products::find($id);
-        if ($products) {
-            $products->delete();
-            return response()->json([
-                'status'    =>  200,
-                'message'   => "Product deleted successfully!"
-            ], 200);
+        $Product = Product::find($id);
+
+        if ($Product) {
+
+            $Product->delete();
+
+            return $Product;
+            
         } else {
 
-            return response()->json([
-                'status'    =>  404,
-                'message'   => "No Data Found!"
-            ], 404);
+            return $Product;
         }
     }
 }

@@ -2,35 +2,24 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Models\Customers;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
 {
-    public function create()
-    {
-        return view('customers-create');
-    }
-
     public function index()
     {
-        $customers = Customers::all();
+        $Customer = Customer::all();
 
-        if ($customers->count() > 0) {
+        if ($Customer->count() > 0) {
 
-           return response()->json([
-                'status' => 200,
-                'result' => $customers
-            ], 200);
+           return $Customer;
 
         } else {
 
-            return response()->json([
-                'status' => 404,
-                'result' => 'No Records Found'
-            ], 404);
+            return $Customer;
 
         }
 
@@ -53,7 +42,7 @@ class CustomerController extends Controller
                 'errors'    => $validator->messages()
             ], 422);
         } else {
-            $customers = Customers::create([
+            $Customer = Customer::create([
                 'first_name'    =>  $request->first_name,
                 'last_name'     =>  $request->last_name,
                 'gender'        =>  $request->gender,
@@ -64,59 +53,44 @@ class CustomerController extends Controller
                 'privilege'     =>  $request->privilege,
                 'points'        =>  0,
             ]);
-            if ($customers) {
+            if ($Customer) {
 
-                return response()->json([
-                    'status'    =>  200,
-                    'message'   => "Customer Information added successfully"
-                ], 200);
+                return $Customer;
 
             } else {
 
-                return response()->json([
-                    'status'    =>  500,
-                    'message'   => "Something went wrong!"
-                ], 500);
+                return $Customer;
             
             }
         }
     }
     public function show(int $id)
     {
-        $customers = Customers::where('id', $id)->get();
+        $Customer = Customer::where('id', $id)->get();
 
-        if ($customers) {
+        if ($Customer) {
 
-            return response()->json([
-                'status'    => 200,
-                'result'    => $customers
-            ], 200);
+            return $Customer;
 
         } else {
 
-            return response()->json([
-                'status'    => 404,
-                'result'    => "No Result Found",
-            ], 404);
+            return $Customer;
             
         }
     }
 
     public function edit($id)
     {
-        $customers = Customers::find($id);
-        if ($customers) {
+        $Customer = Customer::find($id);
 
-            return response()->json([
-                'status'    =>  200,
-                'customers'   => $customers
-            ], 200);
+        if ($Customer) {
+
+            return $Customer;
+
         } else {
 
-            return response()->json([
-                'status'    =>  404,
-                'message'   => "No Data Found!"
-            ], 404);
+            return $Customer;
+
         }
     }
 
@@ -141,11 +115,11 @@ class CustomerController extends Controller
             ], 422);
         } else {
 
-            $customers = Customers::find($id);
+            $Customer = Customer::find($id);
 
-            if ($customers) {
+            if ($Customer) {
 
-                $customers = Customers::find($id)->update([
+                $Customer = Customer::find($id)->update([
                     'first_name'    =>  $request->first_name,
                     'last_name'     =>  $request->last_name,
                     'gender'        =>  $request->gender,
@@ -157,37 +131,30 @@ class CustomerController extends Controller
                     'points'        =>  $request->points
                 ]);
 
-                return response()->json([
-                    'status'    =>  200,
-                    'message'   => "Customer Information updated successfully"
-                ], 200);
+                return $Customer;
+                
             } else {
 
-                return response()->json([
-                    'status'    =>  404,
-                    'message'   => "Data not Found!"
-                ], 404);
+                return $Customer;
+
             }
         }
     }
 
     public function destroy($id)
     {
-        $customers = Customers::find($id);
-        if ($customers) {
+        $Customer = Customer::find($id);
+        
+        if ($Customer) {
 
-            $customers->delete();
+            $Customer->delete();
 
-            return response()->json([
-                'status'    =>  200,
-                'message'   => "Customer Information deleted successfully"
-            ], 200);
+            return $Customer;
+
         } else {
 
-            return response()->json([
-                'status'    =>  404,
-                'message'   => "No Data Found!"
-            ], 404);
+            return $Customer;
+
         }
     }
 }

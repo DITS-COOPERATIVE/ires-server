@@ -17,14 +17,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResources([
-    'products' => ProductController::class,
-    'customers' => CustomerController::class,
-    'orders' => OrderController::class,
-    'transactions' => TransactionController::class,
-    'sales' => SalesController::class,
-]);
-
 Route::middleware(['auth:sanctum'])->group(function () {
-
+    Route::apiResources([
+        'products' => ProductController::class,
+        'customers' => CustomerController::class,
+        'orders' => OrderController::class,
+        'transactions' => TransactionController::class,
+        'sales' => SalesController::class,
+    ]);
 });

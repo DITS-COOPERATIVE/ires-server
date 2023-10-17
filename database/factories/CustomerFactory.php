@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Customers;
+use App\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class CustomersFactory extends Factory
+class CustomerFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,7 +16,7 @@ class CustomersFactory extends Factory
      * @return array<string, mixed>
      */
 
-    protected $model = Customers::class;
+    protected $model = Customer::class;
 
     public function definition(): array
     {

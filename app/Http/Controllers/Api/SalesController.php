@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\SaleValidationRequest;
 
 class SaleController extends Controller
 {
@@ -13,35 +14,21 @@ class SaleController extends Controller
      */
     public function index()
     {
-        $Sale = Sale::with('orders','orders.customer', 'orders.product')->get();
+        $Sale = Sale::with('orders','orders.customer', 'orders.product');
 
-        if ($Sale->count() > 0) {
-            
-            if ($Sale->count() > 0) {
-    
-            return $Sale;
-
-        } else {
-
-            return $Sale;
-        }
+        return response()->json([
+            'result' => $Sale
+        ]);
     }
-}
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(SaleValidationRequest $request)
     {
-        //
-    }
+        $validated = $request->validated();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        $Sale = Sale::create($validated);
+
+        return response()->json([
+            'result' => $Sale
+        ]);
     }
 
     /**
@@ -49,23 +36,26 @@ class SaleController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
+        $Sale = Sale::where('id', $id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return response()->json([
+            'result'   => $Sale,
+        ]);
     }
-
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SaleValidationRequest $request, string $id)
     {
-        //
+        $validated = $request->validated();
+
+        $Sale = Sale::find($id)->update([
+            $validated
+        ]);
+
+        return response()->json([
+            'result'   => $Sale,
+        ]);
     }
 
     /**
@@ -73,6 +63,10 @@ class SaleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $Sale = Sale::find($id)->delete();
+
+        return response()->json([
+            'result'   => $Sale,
+        ]);
     }
 }

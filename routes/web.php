@@ -22,25 +22,3 @@ use App\Http\Controllers\api\TransactionController;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get(
-    '/dashboard',
-    [DashboardController::class, 'show'],
-)->middleware(['auth'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-
-    Route::resources([
-        'products'              => ProductController::class,
-        'customers'             => CustomerController::class,
-        'orders'                => OrderController::class,
-        'transactions'          => TransactionController::class,
-        'orders.transactions'   => TransactionController::class,
-    ]);
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-require __DIR__ . '/auth.php';

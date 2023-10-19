@@ -8,64 +8,32 @@ use App\Http\Requests\Api\SaleValidationRequest;
 
 class SaleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $Sale = Sale::with('orders','orders.customer', 'orders.product');
-
-        return response()->json([
-            'result' => $Sale
-        ]);
+        $Sale = Sale::with(['orders','orders.customer', 'orders.product'])->get();
+        return $Sale;
     }
     public function store(SaleValidationRequest $request)
     {
         $validated = $request->validated();
-
-        $Sale = Sale::create($validated);
-
-        return response()->json([
-            'result' => $Sale
-        ]);
+        $Sale = Sale::create(...$validated);
+        return $Sale;
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Sale $sale)
     {
-        $Sale = Sale::where('id', $id);
-
-        return response()->json([
-            'result'   => $Sale,
-        ]);
+        return $sale;
     }
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(SaleValidationRequest $request, string $id)
+    public function update(SaleValidationRequest $request, Sale $sale)
     {
         $validated = $request->validated();
-
-        $Sale = Sale::find($id)->update([
+        $sale->update([
             $validated
         ]);
-
-        return response()->json([
-            'result'   => $Sale,
-        ]);
+        return $sale;
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Sale $sale)
     {
-        $Sale = Sale::find($id)->delete();
-
-        return response()->json([
-            'result'   => $Sale,
-        ]);
+        $sale->delete();
     }
 }

@@ -12,11 +12,8 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $Transaction = Transaction::with('sale.Order.customer','sale.Order.product');
-
-        return response()->json([
-            'result' => $Transaction
-        ]);
+        $Transaction = Transaction::with(['sale.order.customer','sale.order.product'])->get();
+        return $Transaction;
     }
     public function store(TransactionValidationRequest $request)
     {
@@ -49,7 +46,7 @@ class TransactionController extends Controller
             ->value('total_points');
 
         $customer_id = Transaction::with([
-            'sale.Order' => function ($query) {
+            'sale.order' => function ($query) {
                 $query->select('id', 'customer_id');
             }
         ])

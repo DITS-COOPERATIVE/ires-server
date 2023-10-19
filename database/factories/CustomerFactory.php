@@ -23,8 +23,7 @@ class CustomerFactory extends Factory
         $gender = $this->faker->randomElement(['male', 'female']);
         $privilege = $this->faker->randomElement(['none','senior', 'student','pwd']);
         return [
-            'first_name' => $this->faker->firstName($gender),
-            'last_name' => $this->faker->lastName(),
+            'full_name' => $this->faker->firstName($gender),
             'gender' => $gender,
             'email' => fake()->unique()->safeEmail(),
             'birth_date'=>$this->faker->dateTime(),

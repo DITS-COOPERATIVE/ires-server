@@ -20,10 +20,14 @@ class CustomerFactory extends Factory
 
     public function definition(): array
     {
+
         $gender = $this->faker->randomElement(['male', 'female']);
+        $firstname = $this->faker->firstName($gender);
+        $lastname = $this->faker->lastName();
+        $fullname = $firstname." ".$lastname;
         $privilege = $this->faker->randomElement(['none','senior', 'student','pwd']);
         return [
-            'full_name' => $this->faker->firstName($gender),
+            'full_name' => $fullname,
             'gender' => $gender,
             'email' => fake()->unique()->safeEmail(),
             'birth_date'=>$this->faker->dateTime(),

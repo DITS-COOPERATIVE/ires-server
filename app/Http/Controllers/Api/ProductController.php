@@ -12,59 +12,35 @@ class ProductController extends Controller
     public function index()
     {
         $Product = Product::all();
-
-        return response()->json([
-            'result' => $Product
-        ]);
+        return $Product;
     }
 
     public function store(ProductValidationRequest $request)
     {
         $validated = $request->validated();
 
-        $Product = Product::create($validated);
-
-        return response()->json([
-            'result' => $Product
+        $Product = Product::create([
+            ... $validated
         ]);
+        return $Product;
     }
 
-    public function show(int $id)
+    public function show(Product $product)
     {
-        $Product = Product::where('id', $id)->get();
-
-        return response()->json([
-            'result' => $Product
-        ]);
+        return $product;
     }
 
-    public function edit(int $id)
-    {
-        $Product = Product::where('id', $id)->get();
-        
-        return response()->json([
-            'result' => $Product
-        ]);
-    }
-
-    public function update(ProductValidationRequest $request, int $id)
+    public function update(ProductValidationRequest $request, Product $product)
     {
         $validated = $request->validated();
-
-        $Product = Product::find($id)->update($validated);
-
-        return response()->json([
-            'result' => $Product
+        $product->update([
+            ... $validated,
         ]);
+        return $product;
     }
 
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        $Product = Product::find($id)->delete();
-
-        return response()->json([
-            'result' => $Product
-        ]);
-
+        $product->delete();
     }
 }

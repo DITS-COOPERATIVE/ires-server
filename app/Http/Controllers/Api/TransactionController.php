@@ -12,7 +12,7 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $Transaction = Transaction::with('sale.Order.customer','sale.Order.product')->get();
+        $Transaction = Transaction::with('sale.Order.customer','sale.Order.product');
 
         return response()->json([
             'result' => $Transaction
@@ -30,15 +30,12 @@ class TransactionController extends Controller
 
             $error = "Ammount Rendered is insufficient. Please try again.";
 
-            return response()->json([
-                'message'   => $error,
-            ]);
+            return $error;
 
         } else {
-
-            Transaction::create([
-                $validated,
-                'change'            =>  $change,
+            $Transaction = Transaction::create([
+                ... $validated,
+                'change' =>  $change,
             ]);
         }
         $points = Transaction::with([
@@ -66,28 +63,16 @@ class TransactionController extends Controller
         $customer->points = $new_points;
         $customer->save();
 
-        return response()->json([
-            'message'   => "Transaction Added Successfully"
-        ]);
+        return $Transaction;
     }
 
-    public function show($id)
+    public function show(Transaction $transaction)
     {
-        $transaction = Transaction::find($id);
-
-        return response()->json([
-            'result' => $transaction
-        ]);
+        return $transaction;
     }
 
-    public function destroy(string $id)
+    public function destroy(Transaction $transaction)
     {
-        $Transaction = Transaction::find($id);
-        $Transaction->delete();
-
-        return response()->json([
-            'result' => $Transaction
-        ]);
-
+        $transaction->delete();
     }
 }

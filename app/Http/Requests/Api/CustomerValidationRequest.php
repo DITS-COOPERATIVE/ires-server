@@ -22,8 +22,7 @@ class CustomerValidationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name'    => 'required|string|max: 191',
-            'last_name'     => 'required|string|max: 191',
+            'full_name'    => 'required|string|max: 191',
             'gender'        => 'required|string|max: 191',
             'email'         => 'required|email',
             'mobile_no'     => 'required',

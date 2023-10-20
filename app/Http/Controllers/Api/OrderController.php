@@ -12,11 +12,8 @@ class OrderController extends Controller
 
     public function index()
     {
-        $Order = Order::with('product', 'customer')->get();
-
-        return response()->json([
-            'result' => $Order,
-        ]);
+        $Order = Order::with(['product','customer'])->get();
+        return $Order;
     }
 
     public function store(OrderValidationRequest $request)
@@ -25,17 +22,16 @@ class OrderController extends Controller
         $product = Product::find($request->product_id);
 
         $Order = Order::create([
-            $validated,
-            'status'            =>  "PENDING",
+            ... $validated,
+            'status'=> "PENDING",
         ]);
 
         $product = Product::find($Order->product_id);
 
         if ($product->quantity < $Order->quantity) {
 
-            return response()->json([
-                'result' => 'Stock is not sufficient. Try again'
-            ]);
+            $message = 'Stock is not sufficient. Try again';
+            return $message;
 
         } else {
 
@@ -49,34 +45,25 @@ class OrderController extends Controller
             $product->quantity = $new_quantity;
             $product->save();
 
-            return response()->json([
-                'result'   => "Order added Successfully"
-            ]);
+            return $Order;
         }
 
     }
 
-    public function show(string $id)
+    public function show(Order $order)
     {
-        $Order = Order::where('id', $id);
-
-        return response()->json([
-            'result' => $Order,
-        ]);
+        return $order;
     }
 
-    public function destroy(string $id)
+    public function destroy(Order $order)
     {
-        $Order = Order::find($id);
+        $Order = Order::find($order);
         $product = Product::find($Order->product_id);
 
         $return_order_quantity = $Order->quantity + $product->quantity;
-            $product->quantity = $return_order_quantity;
-            $product->save();
+        $product->quantity = $return_order_quantity;
+        $product->save();
 
-            $Order->delete();
-            return response()->json([   
-                'message'   => ["Order deleted successfully", $product->quantity]
-            ]);
+        $Order->delete();
     }
 }

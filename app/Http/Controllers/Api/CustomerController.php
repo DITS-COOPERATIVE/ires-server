@@ -11,63 +11,35 @@ class CustomerController extends Controller
     public function index()
     {
         $Customer = Customer::all();
-
-        return response()->json([
-            'result' => $Customer
-        ]);
+        return $Customer;
 
     }
     public function store(CustomerValidationRequest $request)
     {
         $validated = $request->validated();
-
         $Customer = Customer::create([
-            $validated,
+            ... $validated,
             'points'        =>  0,
         ]);
-
-        return response()->json([
-            'result' => $Customer
-        ]);
+        return $Customer;
     }
-    public function show(int $id)
+    public function show(Customer $customer)
     {
-        $Customer = Customer::where('id', $id)->get();
-
-        return response()->json([
-            'result' => $Customer
-        ]);
+        return $customer;
     }
 
-    public function edit($id)
-    {
-        $Customer = Customer::find($id);
-
-        return response()->json([
-            'result' => $Customer
-        ]);
-    }
-
-    public function update(CustomerValidationRequest $request, int $id)
+    public function update(CustomerValidationRequest $request, Customer $customer)
     {
         $validated = $request->validated();
-
-        $Customer = Customer::find($id)->update([
+        $customer->update([
             $validated,
-            'points'        =>  $request->points
+            'points' =>  $request->points
         ]);
-
-        return response()->json([
-            'result' => $Customer
-        ]);
+        return $customer;
     }
 
-    public function destroy($id)
+    public function destroy(Customer $customer)
     {
-        $Customer = Customer::find($id);
-        
-        return response()->json([
-            'result' => $Customer
-        ]);
+        $customer->delete();
     }
 }

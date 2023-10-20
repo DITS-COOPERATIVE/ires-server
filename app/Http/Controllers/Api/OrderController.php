@@ -2,153 +2,68 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Models\Sales;
-use App\Models\Orders;
-use App\Models\Products;
-use Illuminate\Http\Request;
+use App\Models\Sale;
+use App\Models\Order;
+use App\Models\Product;
 use App\Http\Controllers\Controller;
-use App\Models\Customers;
-use Illuminate\Support\Facades\Validator;
-
+use App\Http\Requests\Api\OrderValidationRequest;
 class OrderController extends Controller
 {
-    public function create()
-    {
-        return view('orders-create');
-    }
 
     public function index()
     {
-        $orders = Orders::with('product', 'customer')->get();
-
-        if ($orders->count() > 0) {
-
-            return response()->json([
-                'status' => 200,
-                'result' => $orders,
-            ], 200);
-
-        } else {
-             return response()->json([
-                'status' => 404,
-                'result' => 'No Records Found',
-             ], 404);
-        }
+        $Order = Order::with(['product','customer'])->get();
+        return $Order;
     }
 
-    public function store(Request $request)
+    public function store(OrderValidationRequest $request)
     {
-        $customer = Customers::find($request->customer_id);
-        $product = Products::find($request->product_id);
+        $validated = $request->validated();
+        $product = Product::find($request->product_id);
 
-        $validator = Validator::make($request->all(), [
-            'product_id'            => 'required',
-            'customer_id'           => 'required',
-            'quantity'              => 'required',
+        $Order = Order::create([
+            ... $validated,
+            'status'=> "PENDING",
         ]);
-        if ($validator->fails()) {
 
-            return response()->json([
-                'status'    => 422,
-                'errors'    => $validator->messages()
-            ], 422);
+        $product = Product::find($Order->product_id);
+
+        if ($product->quantity < $Order->quantity) {
+
+            $message = 'Stock is not sufficient. Try again';
+            return $message;
+
         } else {
 
-            if (!$customer||!$product) {
-                return response()->json([
-                    'status' => 404,
-                    'message' => 'Data not found. Try again'
-                ], 404);
-            }
-
-            $orders = Orders::create([
-                'customer_id'       =>  $request->customer_id,
-                'product_id'        =>  $request->product_id,
-                'quantity'          =>  $request->quantity,
-                'status'            =>  "PENDING",
+            Sale::create([
+                'order_id'      =>  $Order->id,
+                'total_price'   =>  $product->price * $Order->quantity,
+                'total_points'  =>  $product->points * $Order->quantity,
             ]);
 
-            if ($orders) {
-
-                $product = Products::find($orders->product_id);
-
-                if ($product->quantity < $orders->quantity) {
-
-                    return response()->json([
-                        'status' => 404,
-                        'message' => 'Stock is not sufficient. Try again'
-                    ], 404);
-    
-                } else {
-
-                    Sales::create([
-                        'order_id'      =>  $orders->id,
-                        'total_price'   =>  $product->price * $orders->quantity,
-                        'total_points'  =>  $product->points * $orders->quantity,
-                    ]);
-    
-                    $new_quantity = $product->quantity - $orders->quantity;
-                    $product->quantity = $new_quantity;
-                    $product->save();
-    
-                    return response()->json([
-                        'status'    =>  200,
-                        'message'   => "Order added Successfully"
-                    ], 200);
-                }
-
-            } else {
-
-                return response()->json([
-                    'status'    =>  500,
-                    'message'   => "Something went wrong!"
-                ], 500);
-            }
-        }
-    }
-
-    public function show(string $id)
-    {
-        $orders = Orders::where('id', $id)->get();
-
-        if ($orders) {
-
-            return response()->json([
-                'status' => 200,
-                'result' => $orders->flatten()->first(),
-            ], 200);
-
-        } else {
-
-            return response()->json([
-                'status' => 404,
-                'result' => "Order Not Found"
-            ], 404);
-        }
-    }
-
-    public function destroy(string $id)
-    {
-        $orders = Orders::find($id);
-        $product = Products::find($orders->product_id);
-
-        if ($orders) {
-
-            $return_order_quantity = $orders->quantity + $product->quantity;
-            $product->quantity = $return_order_quantity;
+            $new_quantity = $product->quantity - $Order->quantity;
+            $product->quantity = $new_quantity;
             $product->save();
 
-            $orders->delete();
-            return response()->json([   
-                'status'    =>  200,
-                'message'   => ["Order deleted successfully", $product->quantity]
-            ], 200);
-        } else {
-
-            return response()->json([
-                'status'    =>  404,
-                'message'   => "No Data Found!"
-            ], 404);
+            return $Order;
         }
+
+    }
+
+    public function show(Order $order)
+    {
+        return $order;
+    }
+
+    public function destroy(Order $order)
+    {
+        $Order = Order::find($order);
+        $product = Product::find($Order->product_id);
+
+        $return_order_quantity = $Order->quantity + $product->quantity;
+        $product->quantity = $return_order_quantity;
+        $product->save();
+
+        $Order->delete();
     }
 }

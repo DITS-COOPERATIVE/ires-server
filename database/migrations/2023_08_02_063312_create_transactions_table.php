@@ -18,6 +18,9 @@ return new class extends Migration
             $table->float('change');
             $table->timestamps();
         });
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->softDeletes(); 
+        });
     }
 
     /**
@@ -26,5 +29,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('transactions');
+        Schema::table('trasactions', function (Blueprint $table) {
+            $table->dropSoftDeletes(); 
+        });
     }
 };

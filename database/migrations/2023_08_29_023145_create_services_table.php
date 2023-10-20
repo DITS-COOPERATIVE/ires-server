@@ -20,6 +20,9 @@ return new class extends Migration
             $table->float('points');
             $table->timestamps();
         });
+        Schema::table('services', function (Blueprint $table) {
+            $table->softDeletes(); 
+        });
     }
 
     /**
@@ -28,5 +31,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('services');
+        Schema::table('services', function (Blueprint $table) {
+            $table->dropSoftDeletes(); 
+        });
     }
 };

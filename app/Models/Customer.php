@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Transactions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'full_name',

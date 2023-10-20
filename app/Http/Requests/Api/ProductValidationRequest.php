@@ -28,7 +28,7 @@ class ProductValidationRequest extends FormRequest
             'price'         => 'required|numeric',
             'quantity'      => 'required|numeric',
             'points'        => 'required|numeric',
-            'image'         => 'required',
+            'category'      => 'required',
         ];
     }
 }

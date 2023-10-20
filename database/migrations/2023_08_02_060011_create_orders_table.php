@@ -18,8 +18,6 @@ return new class extends Migration
             $table->bigInteger('quantity');
             $table->string('status');
             $table->timestamps();
-        });
-        Schema::table('orders', function (Blueprint $table) {
             $table->softDeletes(); 
         });
     }
@@ -30,8 +28,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('orders');
-        Schema::table('orders', function (Blueprint $table) {
-            $table->dropSoftDeletes(); 
-        });
     }
 };

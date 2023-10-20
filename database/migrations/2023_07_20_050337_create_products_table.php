@@ -19,10 +19,9 @@ return new class extends Migration
             $table->integer('price');
             $table->integer('quantity');
             $table->float('points');
-            $table->string('image');
+            $table->string('image')->nullable();
+            $table->string('category');
             $table->timestamps();
-        });
-        Schema::table('products', function (Blueprint $table) {
             $table->softDeletes(); 
         });
     }
@@ -33,8 +32,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('products');
-        Schema::table('products', function (Blueprint $table) {
-            $table->dropSoftDeletes(); 
-        });
     }
 };

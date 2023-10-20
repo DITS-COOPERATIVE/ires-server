@@ -18,11 +18,13 @@ class ProductFactory extends Factory
     protected $model = Product::class;
     public function definition(): array
     {
+        $category = $this->faker->randomElement(['software','hardware','services']);
         return [
+            
             'name'=>$this->faker->word(),
+            'category'=>$category,
             'code'=>$this->faker->regexify('[A-Z]{5}[0-4]{3}'),
             'model'=>$this->faker->regexify('[A-Z]{5}[0-4]{3}'),
-            'image'=>$this->faker->regexify('[A-Z]{5}[0-4]{3}'),
             'price'=>$this->faker->randomNumber(4, true),
             'quantity'=>$this->faker->randomNumber(2, true),
             'points'=>$this->faker->randomFloat(2,1000,99),

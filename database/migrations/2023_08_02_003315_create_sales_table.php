@@ -19,6 +19,7 @@ return new class extends Migration
             $table->float('total_price');
             $table->float('total_points');
             $table->timestamps();
+            $table->softDeletes(); 
         });
     }
 

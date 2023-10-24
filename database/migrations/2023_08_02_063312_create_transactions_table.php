@@ -17,6 +17,7 @@ return new class extends Migration
             $table->float('amount_rendered');
             $table->float('change');
             $table->timestamps();
+            $table->softDeletes(); 
         });
     }
 

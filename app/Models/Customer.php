@@ -14,7 +14,6 @@ class Customer extends Model
         'full_name',
         'gender',
         'email',
-        'birth_date',
         'mobile_no',
         'address',
         'privilege',

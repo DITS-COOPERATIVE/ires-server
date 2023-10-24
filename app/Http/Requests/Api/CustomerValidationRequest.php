@@ -28,7 +28,6 @@ class CustomerValidationRequest extends FormRequest
             'mobile_no'     => 'required',
             'points'        => 'required',
             'address'       => 'required',
-            'birth_date'    => 'required',
             'privilege'     => 'required',
         ];
     }

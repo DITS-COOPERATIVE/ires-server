@@ -30,12 +30,11 @@ class CustomerFactory extends Factory
             'full_name' => $fullname,
             'gender' => $gender,
             'email' => fake()->unique()->safeEmail(),
-            'birth_date'=>$this->faker->dateTime(),
             'mobile_no'=>$this->faker->phoneNumber(),
             'address'=>$this->faker->address(),
             'points'=>$this->faker->randomFloat(2,1000,99),
             'privilege'=>$privilege,
-            'image'=>$this->faker->regexify('[A-Z]{5}[0-4]{3}'),
+            'image'=>$this->faker->imageUrl(),
         ];
     }
 }

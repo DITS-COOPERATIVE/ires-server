@@ -17,11 +17,10 @@ return new class extends Migration
             $table->string('gender');
             $table->string('email');
             $table->string('mobile_no');
-            $table->string('birth_date');
             $table->string('address');
             $table->string('privilege');
             $table->float('points');
-            $table->string('image');
+            $table->string('image')->default('');
             $table->timestamps();
             $table->softDeletes(); 
         });

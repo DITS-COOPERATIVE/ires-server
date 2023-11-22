@@ -22,8 +22,8 @@ class OrderValidationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id'            => 'required',
             'customer_id'           => 'required',
+            'product_id'            => 'required',
             'quantity'              => 'required',
         ];
     }

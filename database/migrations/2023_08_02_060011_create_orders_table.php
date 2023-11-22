@@ -16,9 +16,11 @@ return new class extends Migration
             $table->bigInteger('customer_id');
             $table->bigInteger('product_id');
             $table->bigInteger('quantity');
+            $table->bigInteger('price');
+            $table->bigInteger('points');
             $table->string('status');
             $table->timestamps();
-            $table->softDeletes(); 
+            $table->softDeletes()->nullable(); 
         });
     }
 

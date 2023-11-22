@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('category');
             $table->timestamps();
-            $table->softDeletes(); 
+            $table->softDeletes()->nullable(); 
         });
     }
 

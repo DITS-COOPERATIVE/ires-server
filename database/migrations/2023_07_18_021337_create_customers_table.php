@@ -22,7 +22,7 @@ return new class extends Migration
             $table->float('points');
             $table->string('image')->default('');
             $table->timestamps();
-            $table->softDeletes(); 
+            $table->softDeletes()->nullable(); 
         });
     }
 
@@ -31,9 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('customers', function (Blueprint $table) {
-            $table->dropSoftDeletes(); 
-        });
         Schema::dropIfExists('customers');
     }
 };

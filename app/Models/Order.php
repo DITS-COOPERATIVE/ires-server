@@ -16,15 +16,17 @@ class Order extends Model
         'customer_id',
         'product_id',
         'quantity',
-        'status'
+        'price',
+        'points',
+        'status',
     ];
 
     public function product()
     {
-        return $this->hasOne(Product::class, 'id', 'product_id');
+        return $this->hasMany(Product::class, 'id', 'product_id');
     }
     public function customer()
     {
-        return $this->hasOne(Customer::class, 'id', 'customer_id');
+        return $this->belongsTo(Customer::class, 'id');
     }
 }

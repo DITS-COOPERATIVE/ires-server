@@ -7,6 +7,9 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\OrderValidationRequest;
+use App\Models\Orders_Products;
+use App\Models\Service;
+
 class OrderController extends Controller
 {
 
@@ -18,30 +21,27 @@ class OrderController extends Controller
 
     public function store(OrderValidationRequest $request)
     {
-        $validated = $request->validated();
+
         $product = Product::find($request->product_id);
 
-        $Order = Order::create([
-            ... $validated,
-            'status'=> "PENDING",
-        ]);
-
-        $product = Product::find($Order->product_id);
-
-        if ($product->quantity < $Order->quantity) {
+        if ($product->quantity < $request->quantity) {
 
             $message = 'Stock is not sufficient. Try again';
             return $message;
 
         } else {
 
-            Sale::create([
-                'order_id'      =>  $Order->id,
-                'total_price'   =>  $product->price * $Order->quantity,
-                'total_points'  =>  $product->points * $Order->quantity,
+            $validated = $request->validated();
+            $product = Product::find($request->product_id);
+    
+            $Order = Order::create([
+                ... $validated,
+                'status'        => "PENDING",
+                'price'         => $product->price * $request->quantity,
+                'points'        => $product->points * $request->quantity,
             ]);
 
-            $new_quantity = $product->quantity - $Order->quantity;
+            $new_quantity = $product->quantity - $request->quantity;
             $product->quantity = $new_quantity;
             $product->save();
 

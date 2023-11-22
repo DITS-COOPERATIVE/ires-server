@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Transactions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $table = "products";
 
     protected $fillable = [
@@ -19,5 +19,6 @@ class Product extends Model
         'quantity',
         'points',
         'image',
+        'category',
     ];
 }

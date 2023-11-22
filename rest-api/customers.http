@@ -1,0 +1,50 @@
+@hostname =  http://127.0.0.1:8000
+
+### GET REQUEST // View all Customers
+GET {{hostname}}/api/customers HTTP/1.1
+Accept: application/json
+
+### GET REQUEST // View Customers by ID
+GET {{hostname}}/api/customers/1 HTTP/1.1
+Accept: application/json
+
+### POST REQUEST // Create Customer
+POST {{hostname}}/api/customers HTTP/1.1
+Content-Type: application/json
+Connection: : keep-alive
+Accept: */*
+
+{
+ "full_name": "Lavada Brakus",
+  "gender": "female",
+  "email": "zharris@example.com",
+  "mobile_no": "1-928-317-1519",
+  "birth_date": "1978-09-12 21:18:36",
+  "address": "6275 Muller River\nMorarland, DC 88657-1754",
+  "privilege": "pwd",
+  "points": 576,
+  "image": null,
+}
+
+### PUT REQUEST // Edit Customer
+PUT {{hostname}}/api/customers/1 HTTP/1.1
+Content-Type: application/json
+Connection: : keep-alive
+Accept: */*
+{
+ "full_name": "Lavada Brakus",
+  "gender": "female",
+  "email": "zharris@example.com",
+  "mobile_no": "1-928-317-1519",
+  "birth_date": "1978-09-12 21:18:36",
+  "address": "6275 Muller River\nMorarland, DC 88657-1754",
+  "privilege": "pwd",
+  "points": 576,
+  "image": null,
+}
+
+### DELETE REQUEST // Delete Customer
+DELETE  {{hostname}}/api/customers/1 HTTP/1.1
+Content-Type: application/json
+Connection: : keep-alive
+Accept: */*

@@ -2,27 +2,23 @@
 
 namespace App\Models;
 
-use App\Models\Transactions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model
 {
-    use HasFactory;
-    
-    protected $table = "customers";
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'first_name',
-        'last_name',
+        'full_name',
         'gender',
         'email',
-        'birth_date',
         'mobile_no',
         'address',
         'privilege',
         'points',
         'image',
     ];
-    
+
 }

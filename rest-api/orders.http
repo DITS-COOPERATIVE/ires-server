@@ -1,0 +1,41 @@
+@hostname =  http://127.0.0.1:8000
+
+### GET REQUEST // View All Orders
+GET {{hostname}}/api/orders HTTP/1.1
+Accept: application/json
+
+### GET REQUEST // View Order by ID
+GET {{hostname}}/api/orders/1 HTTP/1.1
+Accept: application/json
+
+### POST REQUEST // Create Order
+POST {{hostname}}/api/orders HTTP/1.1
+Content-Type: application/json
+Connection: keep-alive
+Accept: */*
+
+{
+ "customer_id": "distinctio",
+  "product_id": "ZYYQT301",
+  "quantity": "YYMPL101",
+  "status": 4203,
+}
+
+### PUT REQUEST // Edit Order
+PUT {{hostname}}/api/orders/1 HTTP/1.1
+Content-Type: application/json
+Connection: : keep-alive
+Accept: */*
+
+{
+ "customer_id": "distinctio",
+  "product_id": "ZYYQT301",
+  "quantity": "YYMPL101",
+  "status": 4203,
+}
+
+### DELETE REQUEST // Delete Order
+DELETE  {{hostname}}/api/orders/1 HTTP/1.1
+Content-Type: application/json
+Connection: : keep-alive
+Accept: */*

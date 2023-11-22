@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('fee');
             $table->float('points');
             $table->timestamps();
+            $table->softDeletes(); 
         });
     }
 

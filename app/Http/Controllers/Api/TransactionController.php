@@ -12,11 +12,8 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $Transaction = Transaction::with('sale.Order.customer','sale.Order.product')->get();
-
-        return response()->json([
-            'result' => $Transaction
-        ]);
+        $Transaction = Transaction::with(['sale.order.customer','sale.order.product'])->get();
+        return $Transaction;
     }
     public function store(TransactionValidationRequest $request)
     {
@@ -30,15 +27,12 @@ class TransactionController extends Controller
 
             $error = "Ammount Rendered is insufficient. Please try again.";
 
-            return response()->json([
-                'message'   => $error,
-            ]);
+            return $error;
 
         } else {
-
-            Transaction::create([
-                $validated,
-                'change'            =>  $change,
+            $Transaction = Transaction::create([
+                ... $validated,
+                'change' =>  $change,
             ]);
         }
         $points = Transaction::with([
@@ -52,7 +46,7 @@ class TransactionController extends Controller
             ->value('total_points');
 
         $customer_id = Transaction::with([
-            'sale.Order' => function ($query) {
+            'sale.order' => function ($query) {
                 $query->select('id', 'customer_id');
             }
         ])
@@ -66,28 +60,16 @@ class TransactionController extends Controller
         $customer->points = $new_points;
         $customer->save();
 
-        return response()->json([
-            'message'   => "Transaction Added Successfully"
-        ]);
+        return $Transaction;
     }
 
-    public function show($id)
+    public function show(Transaction $transaction)
     {
-        $transaction = Transaction::find($id);
-
-        return response()->json([
-            'result' => $transaction
-        ]);
+        return $transaction;
     }
 
-    public function destroy(string $id)
+    public function destroy(Transaction $transaction)
     {
-        $Transaction = Transaction::find($id);
-        $Transaction->delete();
-
-        return response()->json([
-            'result' => $Transaction
-        ]);
-
+        $transaction->delete();
     }
 }

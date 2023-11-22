@@ -1,0 +1,49 @@
+@hostname =  http://127.0.0.1:8000
+
+### GET REQUEST // View All Products
+GET {{hostname}}/api/products HTTP/1.1
+Accept: application/json
+
+### GET REQUEST // View Products by ID
+GET {{hostname}}/api/products/1 HTTP/1.1
+Accept: application/json
+
+### POST REQUEST // Create Product
+POST {{hostname}}/api/products HTTP/1.1
+Content-Type: application/json
+Connection: keep-alive
+Accept: */*
+
+{
+ "name": "distinctio",
+  "code": "ZYYQT301",
+  "model": "YYMPL101",
+  "price": 4203,
+  "quantity": 51,
+  "points": 571.45,
+  "image": null,
+  "category": "services",
+}
+
+### PUT REQUEST // Edit Product by ID
+PUT {{hostname}}/api/products/1 HTTP/1.1
+Content-Type: application/json
+Connection: keep-alive
+Accept: */*
+
+{
+ "name": "distinctio",
+  "code": "ZYYQT301",
+  "model": "YYMPL101",
+  "price": 4203,
+  "quantity": 51,
+  "points": 571.45,
+  "image": null,
+  "category": "services",
+}
+
+### DELETE REQUEST // Delete Product by ID
+DELETE   {{hostname}}/api/products/1 HTTP/1.1
+Content-Type: application/json
+Connection: keep-alive
+Accept: */*

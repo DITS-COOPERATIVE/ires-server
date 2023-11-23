@@ -22,7 +22,7 @@ return new class extends Migration
             $table->float('points');
             $table->string('image')->default('');
             $table->timestamps();
-            $table->softDeletes()->nullable(); 
+            $table->softDeletes(); 
         });
     }
 

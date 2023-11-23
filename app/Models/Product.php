@@ -21,4 +21,8 @@ class Product extends Model
         'image',
         'category',
     ];
+    public function customers()
+    {
+        return $this->belongsToMany(Product::class, 'customer_product', 'product_id', 'customer_id');
+    }
 }

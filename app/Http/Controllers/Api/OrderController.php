@@ -7,63 +7,45 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\OrderValidationRequest;
-use App\Models\Orders_Products;
-use App\Models\Service;
+use App\Models\Customer;
+use Illuminate\Support\Facades\Request;
 
 class OrderController extends Controller
 {
 
     public function index()
     {
-        $Order = Order::with(['product','customer'])->get();
+        $Order = Order::with(['products'])->get();
         return $Order;
     }
 
     public function store(OrderValidationRequest $request)
     {
+        $products  = $request->products;
+        $order = Customer::find($request->customer_id);
+        $order->save();
+        $order->products()->attach($products);
 
-        $product = Product::find($request->product_id);
-
-        if ($product->quantity < $request->quantity) {
-
-            $message = 'Stock is not sufficient. Try again';
-            return $message;
-
-        } else {
-
-            $validated = $request->validated();
-            $product = Product::find($request->product_id);
-    
-            $Order = Order::create([
-                ... $validated,
-                'status'        => "PENDING",
-                'price'         => $product->price * $request->quantity,
-                'points'        => $product->points * $request->quantity,
-            ]);
-
-            $new_quantity = $product->quantity - $request->quantity;
-            $product->quantity = $new_quantity;
-            $product->save();
-
-            return $Order;
-        }
-
+        return Order::with(['products'])->where('customer_id','=', $request->customer_id)->get();
     }
 
-    public function show(Order $order)
+    public function show(string $id)
     {
+        $order = Order::with(['products'])->where('customer_id','=', $id)->get();
         return $order;
+    }
+
+    public function update(OrderValidationRequest $request)
+    {
+        $products  = $request->products;
+        $order = Customer::find($request->customer_id);
+        $order->products()->sync($products);
+
+        return Order::with(['products'])->where('customer_id','=', $request->customer_id)->get();
     }
 
     public function destroy(Order $order)
     {
-        $Order = Order::find($order);
-        $product = Product::find($Order->product_id);
-
-        $return_order_quantity = $Order->quantity + $product->quantity;
-        $product->quantity = $return_order_quantity;
-        $product->save();
-
-        $Order->delete();
+        $order->delete();
     }
 }

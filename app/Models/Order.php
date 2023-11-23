@@ -10,23 +10,18 @@ class Order extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = "orders";
-
+    protected $table = "customer_product";
     protected $fillable = [
         'customer_id',
         'product_id',
-        'quantity',
-        'price',
-        'points',
-        'status',
     ];
 
-    public function product()
+    public function products()
     {
-        return $this->hasMany(Product::class, 'id', 'product_id');
+        return $this->hasMany(Product::class,'id','product_id');
     }
-    public function customer()
+    public function customers()
     {
-        return $this->belongsTo(Customer::class, 'id');
+        return $this->belongsTo(Customer::class,'id','customer_id');
     }
 }

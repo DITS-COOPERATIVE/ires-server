@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\api;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\api\OrderController;
+use App\Http\Controllers\api\BarcodeController;
 use App\Http\Controllers\api\ProductController;
 use App\Http\Controllers\api\CustomerController;
 use App\Http\Controllers\api\DashboardController;
@@ -18,3 +20,5 @@ use App\Http\Controllers\api\TransactionController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/generate-barcode', [BarcodeController::class,'index'])->name('generate.barcode');

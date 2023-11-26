@@ -21,17 +21,28 @@ class OrderController extends Controller
 
     public function store(OrderValidationRequest $request)
     {
-        $products  = $request->products;
-        $order = Customer::find($request->customer_id);
-        $order->save();
-        $order->products()->attach($products);
+        $data = $request->validated();
 
-        return Order::with(['products'])->where('customer_id','=', $request->customer_id)->get();
+        $order = Order::create($data);
+
+        collect($request->products)->each(function ($product) use ($order) {
+            $order->products()->attach([
+                $product['id'] => [
+                    'qty' => $product['qty'],
+                    'price' => $product['price'],
+                    'sub_total' => $product['sub_total'],
+                    'points' => $product['points'],
+                    'discount' => $product['discount']
+                ]
+            ]);
+        });
+
+        return $order;
     }
 
     public function show(string $id)
     {
-        $order = Order::with(['products'])->where('customer_id','=', $id)->get();
+        $order = Order::with(['products'])->where('customer_id', '=', $id)->get();
         return $order;
     }
 
@@ -41,7 +52,7 @@ class OrderController extends Controller
         $order = Customer::find($request->customer_id);
         $order->products()->sync($products);
 
-        return Order::with(['products'])->where('customer_id','=', $request->customer_id)->get();
+        return Order::with(['products'])->where('customer_id', '=', $request->customer_id)->get();
     }
 
     public function destroy(Order $order)

@@ -22,8 +22,18 @@ class OrderValidationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'customer_id' => 'required',
-            'products' => 'required',
+            'customer_id' => 'required|exists:customers,id',
+            'total' => 'required',
+            'internal_note' => 'sometimes|string',
+            "customer_note" => 'sometimes|string',
+            'discount' => 'required|numeric',
+            'products' => 'required|array',
+            'products.*.id' => 'exists:products,id',
+            'products.*.price' => 'required',
+            'products.*.qty' => 'required',
+            'products.*.points' => 'required',
+            'products.*.sub_total' => 'required',
+            'products.*.discount' => 'required',
         ];
     }
 }

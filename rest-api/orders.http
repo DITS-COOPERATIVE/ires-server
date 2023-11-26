@@ -10,13 +10,25 @@ Accept: application/json
 
 ### POST REQUEST // Create Order
 POST {{hostname}}/api/orders HTTP/1.1
-Connection: keep-alive
+Content-Type: application/json
 Accept: application/json
-Authorization: Bearer 2|BVUOJ6gGSw5uJ82GarhJurm5077OA1caw8XDXJMl9f214c2d
+
 {
- "customer_id": 1,
-  "product_id": 1,
-  "quantity": 2,
+    "customer_id": 1,
+    "total": 20,
+    "products": [
+        {
+            "id": 1,
+            "price": 20,
+            "qty": 10,
+            "points": 0.1,
+            "sub_total": 30,
+            "discount": 0.1
+        }
+    ],
+    "internal_note": "test",
+    "customer_note": "test",
+    "discount": 20
 }
 ### PUT REQUEST // Edit Order
 PUT {{hostname}}/api/orders/1 HTTP/1.1

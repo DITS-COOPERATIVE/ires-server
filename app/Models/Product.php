@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = "products";
 
     protected $fillable = [
         'name',
@@ -21,8 +21,14 @@ class Product extends Model
         'image',
         'category',
     ];
-    public function customers()
+
+    /**
+     * The orders that belong to the Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function orders(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'customer_product', 'product_id', 'customer_id');
+        return $this->belongsToMany(Order::class);
     }
 }

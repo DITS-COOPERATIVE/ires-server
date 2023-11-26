@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('status');
             $table->string('type');
             $table->double('price', 8, 2);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

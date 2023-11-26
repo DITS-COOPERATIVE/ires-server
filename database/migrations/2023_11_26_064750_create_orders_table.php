@@ -18,6 +18,7 @@ return new class extends Migration
             $table->double('discount', 8,2);
             $table->string('internal_note');
             $table->string('customer_note');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

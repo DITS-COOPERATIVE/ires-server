@@ -1,0 +1,43 @@
+@hostname =  http://127.0.0.1:8000
+
+### GET  // Featch All Services
+GET {{hostname}}/api/reservations HTTP/1.1
+Accept: application/json
+
+
+### POST  // Create Service
+POST {{hostname}}/api/reservations HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "service_id": 1,
+    "customer_id": 1,
+    "customer_name": "test cus",
+    "status": "PENDING",
+    "when": "2023-01-05" ,
+    "location": "Somewhere down the road"
+}
+
+### GET  // GET Service
+GET {{hostname}}/api/reservations/1 HTTP/1.1
+Accept: application/json
+
+
+### PUT  // Update Service
+PUT {{hostname}}/api/reservations/1 HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "service_id": 1,
+    "customer_id": 1,
+    "customer_name": "test cus",
+    "status": "PENDING",
+    "when": "2023-01-04" ,
+    "location": "Somewhere down the road"
+}
+
+### DELETE  // DELETE Service
+DELETE {{hostname}}/api/reservations/1 HTTP/1.1
+Accept: application/json

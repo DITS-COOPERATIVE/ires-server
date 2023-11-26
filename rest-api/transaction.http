@@ -33,41 +33,5 @@ Content-Type: application/json
 Connection: keep-alive
 Accept: */*
 
-// Services apis
 
-### GET  // Featch All Services
-GET {{hostname}}/api/services HTTP/1.1
-Accept: application/json
-
-
-### POST  // Create Service
-POST {{hostname}}/api/services HTTP/1.1
-Accept: application/json
-Content-Type: application/json
-
-{
-    "name": "S1",
-    "price": 200,
-    "status": "Available"
-}
-
-### GET  // GET Service
-GET {{hostname}}/api/services/2 HTTP/1.1
-Accept: application/json
-
-
-### PUT  // Update Service
-PUT {{hostname}}/api/services/1 HTTP/1.1
-Accept: application/json
-Content-Type: application/json
-
-{
-    "name": "S2",
-    "price": 200,
-    "status": "Available"
-}
-
-### DELETE  // DELETE Service
-DELETE {{hostname}}/api/services/1 HTTP/1.1
-Accept: application/json
 

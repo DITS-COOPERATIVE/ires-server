@@ -8,6 +8,7 @@ use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\api\ProductController;
 use App\Http\Controllers\api\ServiceController;
 use App\Http\Controllers\api\CustomerController;
+use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\api\TransactionController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -20,7 +21,8 @@ Route::apiResources([
     'products' => ProductController::class,
     'customers' => CustomerController::class,
     'orders' => OrderController::class,
-    'services' => ServiceController::class
+    'services' => ServiceController::class,
+    'reservations' => ReservationController::class
 ]);
 Route::post('auth/logout', [AuthController::class, 'logoutUser']);
 

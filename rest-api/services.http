@@ -1,44 +1,39 @@
 @hostname =  http://127.0.0.1:8000
 
-### GET REQUEST // View All Services
+### GET  // Featch All Services
 GET {{hostname}}/api/services HTTP/1.1
 Accept: application/json
 
-### GET REQUEST // View Sale by ID
-GET {{hostname}}/api/services/1 HTTP/1.1
+
+### POST  // Create Service
+POST {{hostname}}/api/services HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "S1",
+    "price": 200,
+    "status": "Available",
+    "type": "Software Development"
+}
+
+### GET  // GET Service
+GET {{hostname}}/api/services/2 HTTP/1.1
 Accept: application/json
 
-### POST REQUEST // Create Sale
-POST {{hostname}}/api/services HTTP/1.1
-Content-Type: application/json
-Connection: keep-alive
-Accept: */*
 
-{
- "name": "distinctio",
-  "type": "ZYYQT301",
-  "description": "YYMPL101",
-  "fee": 4203,
-  "points": 571.45,
-}
-
-
-### PUT REQUEST // Edit Sale by ID
+### PUT  // Update Service
 PUT {{hostname}}/api/services/1 HTTP/1.1
+Accept: application/json
 Content-Type: application/json
-Connection: keep-alive
-Accept: */*
 
 {
- "name": "distinctio",
-  "type": "ZYYQT301",
-  "description": "YYMPL101",
-  "fee": 4203,
-  "points": 571.45,
+    "name": "S2",
+    "price": 200,
+    "status": "Available",
+    "type": "Software Development"
 }
 
-### DELETE REQUEST // Delete Sale by ID
-DELETE   {{hostname}}/api/services/1 HTTP/1.1
-Content-Type: application/json
-Connection: keep-alive
-Accept: */*
+### DELETE  // DELETE Service
+DELETE {{hostname}}/api/services/1 HTTP/1.1
+Accept: application/json

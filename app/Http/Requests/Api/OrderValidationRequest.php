@@ -22,7 +22,7 @@ class OrderValidationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'customer_id' => 'required|exists:customers,id',
+            'customer_id' => 'sometimes|exists:customers,id',
             'total' => 'required',
             'internal_note' => 'sometimes|string',
             "customer_note" => 'sometimes|string',

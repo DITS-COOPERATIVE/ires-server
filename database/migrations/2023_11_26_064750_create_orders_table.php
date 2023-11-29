@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->double('total', 8,2);
+            $table->integer('quantity');
             $table->double('discount', 8,2);
             $table->string('internal_note');
             $table->string('customer_note');

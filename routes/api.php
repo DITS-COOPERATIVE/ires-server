@@ -24,6 +24,8 @@ Route::apiResources([
     'services' => ServiceController::class,
     'reservations' => ReservationController::class
 ]);
+
+Route::post('services/{service}/availability', [ServiceController::class, 'availability']);
 Route::post('auth/logout', [AuthController::class, 'logoutUser']);
 
 // });

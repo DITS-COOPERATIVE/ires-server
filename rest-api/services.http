@@ -34,6 +34,15 @@ Content-Type: application/json
     "type": "Software Development"
 }
 
+### POST  // Check if service if available in given date
+POST {{hostname}}/api/services/1/availability HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "when": "2023-10-10"
+}
+
 ### DELETE  // DELETE Service
 DELETE {{hostname}}/api/services/1 HTTP/1.1
 Accept: application/json

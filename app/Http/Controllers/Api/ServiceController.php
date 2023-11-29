@@ -31,6 +31,10 @@ class ServiceController extends Controller
         return $service;
     }
 
+    public function availability(Service $service, Request $request) {
+        return !$service->reservations()->whereDate('when', $request->when)->exists();
+    }
+
     public function destroy(Service $service)
     {
         $service->delete();

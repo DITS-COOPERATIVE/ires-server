@@ -18,7 +18,7 @@ class ProductFactory extends Factory
     protected $model = Product::class;
     public function definition(): array
     {
-        $category = $this->faker->randomElement(['software','hardware','services']);
+        $category = $this->faker->randomElement(['Software','Hardware','Services']);
         return [
             
             'name'=>$this->faker->word(),

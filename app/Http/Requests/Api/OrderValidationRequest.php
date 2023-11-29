@@ -24,6 +24,7 @@ class OrderValidationRequest extends FormRequest
         return [
             'customer_id' => 'sometimes|exists:customers,id',
             'total' => 'required',
+            'quantity' => 'sometimes',
             'internal_note' => 'sometimes|string',
             "customer_note" => 'sometimes|string',
             'discount' => 'required|numeric',

@@ -19,6 +19,8 @@ class Order extends Model
         'discount',
     ];
 
+    protected $with = ['products'];
+
     public function products()
     {
         return $this->belongsToMany(Product::class)->withPivot(

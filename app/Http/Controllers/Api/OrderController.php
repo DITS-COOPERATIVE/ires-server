@@ -40,9 +40,8 @@ class OrderController extends Controller
         return $order;
     }
 
-    public function show(string $id)
+    public function show(Order $order)
     {
-        $order = Order::with(['products'])->where('customer_id', '=', $id)->get();
         return $order;
     }
 

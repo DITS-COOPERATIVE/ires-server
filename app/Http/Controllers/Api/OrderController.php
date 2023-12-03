@@ -26,6 +26,7 @@ class OrderController extends Controller
         $order = Order::create($data);
 
         collect($request->products)->each(function ($product) use ($order) {
+            $item = Product::find($product['id']);
             $order->products()->attach([
                 $product['id'] => [
                     'qty' => $product['qty'],
@@ -34,6 +35,9 @@ class OrderController extends Controller
                     'points' => $product['points'],
                     'discount' => $product['discount']
                 ]
+            ]);
+            $item->update([
+                'quantity' => $item->quantity - $product['qty']
             ]);
         });
 

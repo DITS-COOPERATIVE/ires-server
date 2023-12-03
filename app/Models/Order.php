@@ -19,7 +19,7 @@ class Order extends Model
         'discount',
     ];
 
-    protected $with = ['products'];
+    protected $with = ['products', 'customer'];
 
     public function products()
     {

@@ -33,7 +33,13 @@ class CustomerController extends Controller
         $validated = $request->validated();
         $customer->update([
             $validated,
-            'points' =>  $request->points
+            'full_name' => $validated['full_name'],
+            'gender' => $validated['gender'],
+            'email' => $validated['email'],
+            'mobile_no' => $validated['mobile_no'],
+            'address' => $validated['address'],
+            'privilege' => $validated['privilege'],
+            'points' => $request->points
         ]);
         return $customer;
     }

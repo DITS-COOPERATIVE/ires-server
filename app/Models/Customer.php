@@ -20,6 +20,7 @@ class Customer extends Model
         'privilege',
         'points',
         'image',
+        'barcode',
     ];
 
     public function products()

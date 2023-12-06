@@ -20,6 +20,7 @@ class Product extends Model
         'points',
         'image',
         'category',
+        'barcode',
     ];
 
     /**

@@ -19,7 +19,8 @@ return new class extends Migration
             $table->integer('price');
             $table->integer('quantity');
             $table->float('points');
-            $table->string('image')->nullable();
+            $table->string('image')->default('');
+            $table->string('barcode')->default('');
             $table->string('category');
             $table->timestamps();
             $table->softDeletes(); 

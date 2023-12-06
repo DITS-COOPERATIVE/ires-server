@@ -20,7 +20,8 @@ class ProductController extends Controller
         $validated = $request->validated();
 
         $Product = Product::create([
-            ... $validated
+            ... $validated,
+            'barcode'    =>  random_int(10000000, 99999999),
         ]);
         return $Product;
     }

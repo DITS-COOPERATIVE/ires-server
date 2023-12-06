@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('privilege');
             $table->float('points');
             $table->string('image')->default('');
+            $table->string('barcode')->default('');
             $table->timestamps();
             $table->softDeletes(); 
         });

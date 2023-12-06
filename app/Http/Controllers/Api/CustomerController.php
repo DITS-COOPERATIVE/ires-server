@@ -20,6 +20,7 @@ class CustomerController extends Controller
         $Customer = Customer::create([
             ... $validated,
             'points'        =>  0,
+            'barcode'        =>  random_int(10000000, 99999999),
         ]);
         return $Customer;
     }

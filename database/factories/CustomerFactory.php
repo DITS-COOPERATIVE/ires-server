@@ -25,7 +25,7 @@ class CustomerFactory extends Factory
         $firstname = $this->faker->firstName($gender);
         $lastname = $this->faker->lastName();
         $fullname = $firstname." ".$lastname;
-        $privilege = $this->faker->randomElement(['none','senior', 'student','pwd']);
+        $privilege = $this->faker->randomElement(['None','Senior', 'Student','PWD']);
         return [
             'full_name' => $fullname,
             'gender' => $gender,

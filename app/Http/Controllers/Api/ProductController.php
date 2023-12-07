@@ -19,15 +19,21 @@ class ProductController extends Controller
     {
         $validated = $request->validated();
 
-        $Product = Product::create([
+        $product = Product::create([
             ... $validated,
             'barcode'    =>  random_int(10000000, 99999999),
         ]);
-        return $Product;
+
+        if ($request->subProducts) {
+            collect($request->subProducts)->each(fn ($child) => $product->subProducts()->attach([$child['id'] => ['qty' => $child['qty']]]));
+        }
+        return $product->load('subProducts');
     }
 
     public function show(Product $product)
     {
+        $product->load('subProducts');
+
         return $product;
     }
 
@@ -35,8 +41,14 @@ class ProductController extends Controller
     {
         $validated = $request->validated();
         $product->update([
-            ... $validated,
+            ...$validated,
         ]);
+
+        if ($request->subProducts) {
+            $product->subProducts()->detach();
+            collect($request->subProducts)->each(fn ($child) => $product->subProducts()->attach([$child['id'] => ['qty' => $child['qty']]]));
+        }
+
         return $product;
     }
 

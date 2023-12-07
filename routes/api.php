@@ -8,6 +8,7 @@ use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\api\ProductController;
 use App\Http\Controllers\api\ServiceController;
 use App\Http\Controllers\api\CustomerController;
+use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\api\TransactionController;
 
@@ -22,9 +23,11 @@ Route::apiResources([
     'customers' => CustomerController::class,
     'orders' => OrderController::class,
     'services' => ServiceController::class,
-    'reservations' => ReservationController::class
+    'reservations' => ReservationController::class,
+    'reports' => ReportController::class
 ]);
 
+Route::get('reports/{report}/data', [ReportController::class, 'getData']);
 Route::post('services/{service}/availability', [ServiceController::class, 'availability']);
 Route::post('auth/logout', [AuthController::class, 'logoutUser']);
 

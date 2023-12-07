@@ -25,11 +25,7 @@ class CustomerFactory extends Factory
         $firstname = $this->faker->firstName($gender);
         $lastname = $this->faker->lastName();
         $fullname = $firstname." ".$lastname;
-<<<<<<< Updated upstream
-        $privilege = $this->faker->randomElement(['None','Senior', 'Student','PWD']);
-=======
         $privilege = $this->faker->randomElement(['None','Senior Citizen', 'Student','PWD']);
->>>>>>> Stashed changes
         return [
             'full_name' => $fullname,
             'gender' => $gender,

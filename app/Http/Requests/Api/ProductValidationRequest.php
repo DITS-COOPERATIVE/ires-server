@@ -22,14 +22,13 @@ class ProductValidationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'          => 'required|string|max: 191',
-            'code'          => 'required|string|max: 191',
-            'model'         => 'required|string|max: 191',
-            'price'         => 'required|numeric',
-            'quantity'      => 'required|numeric',
-            'points'        => 'required|numeric',
+            'name'          => 'string|max: 191',
+            'model'         => 'string|max: 191',
+            'price'         => 'numeric',
+            'quantity'      => 'numeric',
+            'points'        => 'numeric',
             'image'         => 'string',
-            'category'      => 'required',
+            'category'      => 'string',
         ];
     }
 }

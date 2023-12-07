@@ -29,6 +29,7 @@ class CustomerValidationRequest extends FormRequest
             'points'        => 'required',
             'address'       => 'required',
             'privilege'     => 'required',
+            'image'         => 'string',
         ];
     }
 }

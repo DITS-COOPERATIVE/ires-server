@@ -21,11 +21,15 @@ class CustomerFactory extends Factory
     public function definition(): array
     {
 
-        $gender = $this->faker->randomElement(['male', 'female']);
+        $gender = $this->faker->randomElement(['Male', 'Female']);
         $firstname = $this->faker->firstName($gender);
         $lastname = $this->faker->lastName();
         $fullname = $firstname." ".$lastname;
+<<<<<<< Updated upstream
         $privilege = $this->faker->randomElement(['None','Senior', 'Student','PWD']);
+=======
+        $privilege = $this->faker->randomElement(['None','Senior Citizen', 'Student','PWD']);
+>>>>>>> Stashed changes
         return [
             'full_name' => $fullname,
             'gender' => $gender,

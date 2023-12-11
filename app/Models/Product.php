@@ -53,6 +53,7 @@ class Product extends Model
      */
     public function subProducts(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'related_product', 'product_id', 'related_id')->withPivot('qty');
+        return $this->belongsToMany(Product::class, 'related_product', 'product_id', 'related_id')
+                    ->withPivot('qty');
     }
 }

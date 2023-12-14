@@ -24,7 +24,6 @@ class ServiceRequest extends FormRequest
         return [
             'name' => 'required',
             'price' => 'required',
-            'status' => 'required',
             'type' => 'required'
         ];
     }

@@ -25,7 +25,7 @@ class CustomerFactory extends Factory
         $lastname = $this->faker->lastName();
         $fullname = $firstname." ".$lastname;
         $privilege = $this->faker->randomElement(['None','Senior Citizen', 'Student','PWD']);
-        $barcode = md5(rand());
+        $barcode = uniqid();
         return [
             'full_name' => $fullname,
             'gender' => $gender,

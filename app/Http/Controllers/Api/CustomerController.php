@@ -20,7 +20,7 @@ class CustomerController extends Controller
         $Customer = Customer::create([
             ... $validated,
             'points'         =>  0,
-            'barcode'        =>  md5(rand()),
+            'barcode'        =>  uniqid(),
         ]);
         
         $generate_barcode = new BarcodeController();

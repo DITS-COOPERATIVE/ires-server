@@ -21,7 +21,7 @@ class ProductController extends Controller
 
         $product = Product::create([
             ... $validated,
-            'barcode'    =>  md5(rand()),
+            'barcode'    =>  uniqid(),
         ]);
 
         if ($request->subProducts) {

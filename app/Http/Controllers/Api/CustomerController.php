@@ -23,10 +23,10 @@ class CustomerController extends Controller
             'barcode'        =>  uniqid(),
         ]);
         
-        $generate_barcode = new BarcodeController();
-        $generate_barcode->generate($Customer->barcode);
+        // $generate_barcode = new BarcodeController();
+        // $generate_barcode->generate($Customer->barcode);
 
-        return [$Customer, $generate_barcode];
+        return $Customer;
     }
     public function show(Customer $customer)
     {

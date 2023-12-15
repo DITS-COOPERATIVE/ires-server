@@ -17,7 +17,6 @@ class CustomerFactory extends Factory
      */
 
     protected $model = Customer::class;
-
     public function definition(): array
     {
 
@@ -26,9 +25,11 @@ class CustomerFactory extends Factory
         $lastname = $this->faker->lastName();
         $fullname = $firstname." ".$lastname;
         $privilege = $this->faker->randomElement(['None','Senior Citizen', 'Student','PWD']);
+        $barcode = md5(rand());
         return [
             'full_name' => $fullname,
             'gender' => $gender,
+            'barcode' => $barcode,
             'email' => fake()->unique()->safeEmail(),
             'mobile_no'=>$this->faker->phoneNumber(),
             'address'=>$this->faker->address(),

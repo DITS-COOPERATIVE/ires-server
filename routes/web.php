@@ -21,4 +21,4 @@ use App\Http\Controllers\api\TransactionController;
 |
 */
 
-Route::get('/generate-barcode', [BarcodeController::class,'index'])->name('generate.barcode');
+Route::get('/generate-barcode', [BarcodeController::class,'generate'])->name('generate.barcode');

@@ -19,10 +19,12 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         $category = $this->faker->randomElement(['Software','Hardware','Services']);
+        $barcode = md5(rand());
         return [
             
             'name'=>$this->faker->word(),
             'category'=>$category,
+            'barcode' => $barcode,
             'model'=>$this->faker->regexify('[A-Z]{5}[0-4]{3}'),
             'price'=>$this->faker->randomNumber(4, true),
             'quantity'=>$this->faker->randomNumber(2, true),

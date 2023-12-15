@@ -19,10 +19,14 @@ class CustomerController extends Controller
         $validated = $request->validated();
         $Customer = Customer::create([
             ... $validated,
-            'points'        =>  0,
-            'barcode'        =>  random_int(10000000, 99999999),
+            'points'         =>  0,
+            'barcode'        =>  md5(rand()),
         ]);
-        return $Customer;
+        
+        $generate_barcode = new BarcodeController();
+        $generate_barcode->generate($Customer->barcode);
+
+        return [$Customer, $generate_barcode];
     }
     public function show(Customer $customer)
     {

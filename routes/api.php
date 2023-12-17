@@ -29,6 +29,7 @@ Route::apiResources([
 ]);
 
 Route::get('reports/{report}/data', [ReportController::class, 'getData']);
+Route::delete('/products/{product}/sub-products/{subProduct}',[ProductController::class, 'destroySubProduct']);
 Route::post('services/{service}/availability', [ServiceController::class, 'availability']);
 Route::post('auth/logout', [AuthController::class, 'logoutUser']);
 

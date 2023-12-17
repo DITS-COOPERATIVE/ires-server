@@ -21,7 +21,7 @@ class ProductController extends Controller
 
         $product = Product::create([
             ... $validated,
-            'barcode'    =>  uniqid(),
+            'barcode'    =>  random_int(10000000, 99999999),
         ]);
 
         if ($request->subProducts) {
@@ -56,4 +56,12 @@ class ProductController extends Controller
     {
         $product->delete();
     }
+
+    public function destroySubProduct(Product $product, $subProduct)
+{
+    $product->subProducts()->detach($subProduct);
+    return response()->json(['message' => 'Sub-product deleted successfully']);
+}
+
+
 }

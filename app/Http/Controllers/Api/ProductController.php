@@ -20,9 +20,15 @@ class ProductController extends Controller
         $validated = $request->validated();
 
         $product = Product::create([
-            ... $validated,
+            ...$validated,
             'barcode'    =>  random_int(10000000, 99999999),
         ]);
+
+        if ($request->hasFile('image')) {
+            $product->update([
+                'image' => 'storage/' .  $request->file('image')->store('product/images', 'public')
+            ]);
+        }
 
         if ($request->subProducts) {
             collect($request->subProducts)->each(fn ($child) => $product->subProducts()->attach([$child['id'] => ['qty' => $child['qty']]]));
@@ -58,10 +64,8 @@ class ProductController extends Controller
     }
 
     public function destroySubProduct(Product $product, $subProduct)
-{
-    $product->subProducts()->detach($subProduct);
-    return response()->json(['message' => 'Sub-product deleted successfully']);
-}
-
-
+    {
+        $product->subProducts()->detach($subProduct);
+        return response()->json(['message' => 'Sub-product deleted successfully']);
+    }
 }

@@ -41,6 +41,18 @@ class OrderController extends Controller
             ]);
         });
 
+        $customer = $order->customer;
+        $totalPoints =  collect($request->products)->reduce(function ($p, $c) {
+            return $p + $c['points'];
+        }, 0);
+
+        if ($customer) {
+            $order->customer->update([
+                'points' => $customer->points + $totalPoints
+            ]);
+        }
+
+
         return $order;
     }
 

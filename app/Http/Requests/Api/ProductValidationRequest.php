@@ -24,7 +24,7 @@ class ProductValidationRequest extends FormRequest
         return [
             'name'          => 'string|max:191',
             'model'         => 'string|max:191',
-            'price'         => 'numeric',
+            'price'         => ['regex:/^\d+(\.\d{1,2})?$/'], 
             'quantity'      => 'numeric',
             'points'        => 'numeric',
             'image'         => 'file|image',

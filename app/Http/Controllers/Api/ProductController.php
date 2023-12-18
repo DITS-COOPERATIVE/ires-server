@@ -21,7 +21,7 @@ class ProductController extends Controller
 
         $product = Product::create([
             ...$validated,
-            'barcode'    =>  random_int(10000000, 99999999),
+            'barcode'    => uniqid(),
         ]);
 
         if ($request->hasFile('image')) {
